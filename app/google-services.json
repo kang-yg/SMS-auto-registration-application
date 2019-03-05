@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "935194526781",
+    "firebase_url": "https://smsautoregistration-a2037.firebaseio.com",
+    "project_id": "smsautoregistration-a2037",
+    "storage_bucket": "smsautoregistration-a2037.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935194526781:android:f84e06f1bf7c4c5d",
+        "android_client_info": {
+          "package_name": "com.example.yg.sms_auto_registration"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935194526781-cd7tlljaalp4vvk58m9oinalkcgh0ddv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yg.sms_auto_registration",
+            "certificate_hash": "2019c92af78df528e8de1f917273ea9f71909d0c"
+          }
+        },
+        {
+          "client_id": "935194526781-ifa6tfakrvf5ggj2u4758cuml2fcllu4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVwMMyoHGEdYYajOxYqc3KDsIpDKQ_qZc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935194526781-ifa6tfakrvf5ggj2u4758cuml2fcllu4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
