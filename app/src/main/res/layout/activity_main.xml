@@ -8,9 +8,15 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/testButton"
+        android:id="@+id/testSendButton"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:text="버튼"/>
+        android:text="sendToFireDB"/>
+    
+    <Button
+        android:id="@+id/testReceiveButton"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="receiveFromFireDB"/>
 
 </LinearLayout>

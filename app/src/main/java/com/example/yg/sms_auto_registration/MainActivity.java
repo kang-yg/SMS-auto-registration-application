@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button;
+    Button sendButton;
+    Button receiveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +31,21 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.RECEIVE_SMS},1);
         }
 
-        button = (Button)findViewById(R.id.testButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        sendButton = (Button)findViewById(R.id.testSendButton);
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectFireBaseDB.write("미나", 23);
+                ConnectFireBaseDB.postFirebaseDB(true,1,"미나","트와이스");
+                ConnectFireBaseDB.postFirebaseDB(true,2,"아이린","레드벨벳");
+                ConnectFireBaseDB.postFirebaseDB(true,3,"박보영","이쁘니");
+            }
+        });
+
+        receiveButton = (Button)findViewById(R.id.testReceiveButton);
+        receiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectFireBaseDB.UserRead();
             }
         });
 
