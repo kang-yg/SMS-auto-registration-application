@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">SMS_Auto_Registration</string>
+    <string name="logo_name">스미스 캘린더</string>
+    <string name="enroll">SMS 등록 알림함</string>
+    <string name="schelist">일정 목록</string>
+    <string name="doitlist">할 일 목록</string>
+    <string name="anniverlist">기념일 목록</string>
+    <string name="searchlist">검색</string>
+    <string name="searchhint">날짜, 내용을 검색해주세요   예) 날짜-2019.01.09</string>
+    <string name="setting">설정</string>
+    <string name="pattern">SMS 등록 패턴</string>
+    <string name="autosms">SMS 일정 자동 등록</string>
+    <string name="alram">알림 설정</string>
+    <string name="sync">동기화</string>
+    <string name="sendmess">문의 보내기</string>
+    <string name="update">공지사항</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.yg.sms_auto_registration;
 
+
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -9,9 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ConnectFireBaseDB {
@@ -32,16 +31,25 @@ public class ConnectFireBaseDB {
     }
 
     public static void UserRead() {
-        myRef = FirebaseDatabase.getInstance().getReference("User");
+        myRef = FirebaseDatabase.getInstance().getReference();
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> keys = new ArrayList<>();
-                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                    keys.add(keyNode.getKey());
-                    FirebaseDB_User firebaseDB_user = keyNode.getValue(FirebaseDB_User.class);
-
+                HashMap<String, Object> mMap = new HashMap<>();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String key = postSnapshot.getKey();
+                    Object objectValue = postSnapshot.getValue();
+                    HashMap<String, String> data = (HashMap<String, String>) objectValue;
+                    for (String k : data.keySet()) {
+                        FirebaseDB_User firebaseDB_user = new FirebaseDB_User();
+                        firebaseDB_user.setGoogleID(k);
+                        firebaseDB_user.setUserName(data.get(k));
+                        //Log.d("UserRead", "data[" + k + "]: " + data.get(k));
+                        Log.d("UserRead", "firebaseDB_user.googleID : " + firebaseDB_user.getGoogleID());
+                        Log.d("UserRead", "firebaseDB_user.userName : " + firebaseDB_user.getUserName());
+                    }
+                    Log.d("UserRead", "key: " + key);
                 }
             }
 
@@ -49,6 +57,8 @@ public class ConnectFireBaseDB {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        Query query = FirebaseDatabase.getInstance().getReference().child("User");
+        query.addListenerForSingleValueEvent(valueEventListener);
     }
 }

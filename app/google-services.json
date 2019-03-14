@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "935194526781-ji60ba0lmiom2m19v2hajoddfhbpqd8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yg.sms_auto_registration",
+            "certificate_hash": "41996f1b4ad2d1cefba7b6147d8ab78847d7a854"
+          }
+        },
+        {
           "client_id": "935194526781-ifa6tfakrvf5ggj2u4758cuml2fcllu4.apps.googleusercontent.com",
           "client_type": 3
         }
