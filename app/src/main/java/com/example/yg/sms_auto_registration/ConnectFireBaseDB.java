@@ -72,7 +72,7 @@ public class ConnectFireBaseDB {
     /*---------------------------------------------------------------------------------------------------------------------*/
     //Group
 
-    public static void postGroup(boolean add, String _groupNumber, ArrayList<String> _userUID, String _groupName) {
+    public static void postGroup(boolean add, int _groupNumber, ArrayList<String> _userUID, String _groupName) {
         myRef = FirebaseDatabase.getInstance().getReference();
         Map<String, Object> childUpdate = new HashMap<>();
         Map<String, Object> postValue = null;
@@ -102,14 +102,18 @@ public class ConnectFireBaseDB {
                     }
                 }
 
+                firebaseDB_group.setGroupName(arrayList.get(0));
+
                 Object objectValue = arrayList.get(1);
                 ArrayList<String> arrayUID = (ArrayList<String>) objectValue;
-
                 for (int i = 0; i < arrayUID.size(); i++) {
                     firebaseDB_group.setUserUID(arrayUID.get(i));
                 }
-                firebaseDB_group.setGroupName(arrayList.get(0));
-                firebaseDB_group.setGroupNumber(arrayList.get(2));
+
+
+                int groupNum = Integer.parseInt(String.valueOf(arrayList.get(2)));
+                firebaseDB_group.setGroupNumber(groupNum);
+
             }
 
             @Override
@@ -122,5 +126,5 @@ public class ConnectFireBaseDB {
 
     /*---------------------------------------------------------------------------------------------------------------------*/
     //Schedule
-    
+
 }

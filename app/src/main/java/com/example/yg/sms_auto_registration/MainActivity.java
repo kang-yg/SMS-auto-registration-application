@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         groupSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectFireBaseDB.postGroup(true, "1", testGroupUID, "이쁜이들");
+                ConnectFireBaseDB.postGroup(true, 1, testGroupUID, "이쁜이들");
             }
         });
 

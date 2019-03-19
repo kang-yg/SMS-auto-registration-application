@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseDB_Group {
-    private String groupNumber;
+    private int groupNumber;
     private ArrayList<String> userUID = new ArrayList<>();
     private String groupName;
 
-    public FirebaseDB_Group(String groupNumber, String groupName) {
+    public FirebaseDB_Group(int groupNumber, String groupName) {
         this.groupNumber = groupNumber;
         this.groupName = groupName;
     }
@@ -40,16 +40,18 @@ public class FirebaseDB_Group {
         this.groupName = groupName;
     }
 
-    public String getGroupNumber() {
-        return groupNumber;
-    }
 
-    public void setGroupNumber(String groupNumber) {
-        this.groupNumber = groupNumber;
-    }
 
 
     public void setUserUID(String _userUID) {
         this.userUID.add(_userUID);
+    }
+
+    public int getGroupNumber() {
+        return groupNumber;
+    }
+
+    public void setGroupNumber(int groupNumber) {
+        this.groupNumber = groupNumber;
     }
 }
