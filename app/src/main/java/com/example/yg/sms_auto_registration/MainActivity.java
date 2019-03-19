@@ -16,16 +16,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button sendButton;
-    Button receiveButton;
+    Button userSendButton;
+    Button userReceiveButton;
+    Button groupSendButton;
+    Button groupReceiveButton;
 
     String providerId;
     String uid;
     String name;
     String email;
     Uri photoUrl;
+
+    ArrayList<String> testGroupUID = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +67,45 @@ public class MainActivity extends AppCompatActivity {
         Log.d("myInfoFirebase", "name : " + name);
         Log.d("myInfoFirebase", "email : " +  email);
 
-        sendButton = (Button)findViewById(R.id.testSendButton);
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        userSendButton = (Button)findViewById(R.id.User_testSendButton);
+        userSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConnectFireBaseDB.postUser(true, name, email, uid,providerId);
             }
         });
 
-        receiveButton = (Button)findViewById(R.id.testReceiveButton);
-        receiveButton.setOnClickListener(new View.OnClickListener() {
+        userReceiveButton = (Button)findViewById(R.id.User_testReceiveButton);
+        userReceiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("abc","clicked");
                 ConnectFireBaseDB.UserRead();
             }
         });
+
+
+        testGroupUID.add("미나");
+        testGroupUID.add("박보영");
+        testGroupUID.add("한효주");
+
+        groupSendButton = (Button)findViewById(R.id.Group_testSendButton);
+        groupSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectFireBaseDB.postGroup(true, "1", testGroupUID, "이쁜이들");
+            }
+        });
+
+        groupReceiveButton = (Button)findViewById(R.id.Group_testReceiveButton);
+        groupReceiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectFireBaseDB.GroupRead();
+            }
+        });
+
+
 
 
     }
