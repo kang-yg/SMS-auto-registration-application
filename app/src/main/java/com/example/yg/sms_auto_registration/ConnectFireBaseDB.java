@@ -1,6 +1,7 @@
 package com.example.yg.sms_auto_registration;
 
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -189,5 +190,53 @@ public class ConnectFireBaseDB {
     /*---------------------------------------------------------------------------------------------------------------------*/
     //Revision history
 
+    public static void postRevision(Boolean _add, int _revisionNumber, int _revisionScheduleNumber, String _revisionDate, String _revisionContent, String _revisionUser) {
+        myRef = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> childUpdate = new HashMap<>();
+        Map<String, Object> postValue = null;
+        if (_add) {
+            FirebaseDB_RevisionHistory post = new FirebaseDB_RevisionHistory(_revisionNumber, _revisionScheduleNumber, _revisionDate, _revisionContent, _revisionUser);
+            postValue = post.toMap();
+        }
+        childUpdate.put("/RevisionHistory/" + _revisionNumber, postValue);
+        myRef.updateChildren(childUpdate);
+    }
+
+    public static void RevisionRead(){
+        myRef = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FirebaseDB_RevisionHistory firebaseDB_revisionHistory = new FirebaseDB_RevisionHistory();
+                ArrayList<String> arrayList = new ArrayList<>();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Object objectValue = postSnapshot.getValue();
+                    HashMap<String, String> data = (HashMap<String, String>) objectValue;
+                    for (String k : data.keySet()) {
+                        arrayList.add(data.get(k));
+                    }
+                }
+                firebaseDB_revisionHistory.setRevisionDate(arrayList.get(0));
+
+                firebaseDB_revisionHistory.setRevisionUser(arrayList.get(1));
+
+                int revisionNumber = Integer.parseInt(String.valueOf(arrayList.get(2)));
+                firebaseDB_revisionHistory.setRevisionNumber(revisionNumber);
+
+                int revisionScheduleNumber = Integer.parseInt(String.valueOf(arrayList.get(3)));
+                firebaseDB_revisionHistory.setRevisionScheduleNumber(revisionScheduleNumber);
+
+                firebaseDB_revisionHistory.setRevisionContent(arrayList.get(4));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        Query query = FirebaseDatabase.getInstance().getReference().child("RevisionHistory");
+        query.addListenerForSingleValueEvent(valueEventListener);
+    }
 
 }

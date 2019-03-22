@@ -31,7 +31,8 @@ public class FirebaseDB_Schedule {
         this.scheduleRepeat = scheduleRepeat;
     }
 
-    public FirebaseDB_Schedule() { }
+    public FirebaseDB_Schedule() {
+    }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -73,8 +74,6 @@ public class FirebaseDB_Schedule {
     public void setScheduleClassification(int scheduleClassification) {
         this.scheduleClassification = scheduleClassification;
     }
-
-
 
     public String getScheduleTitle() {
         return scheduleTitle;

@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     Button groupReceiveButton;
     Button sheduleSendButton;
     Button sheduleReceiveButton;
+    Button revisionSendButton;
+    Button revisionReceiveButton;
 
     String providerId;
     String uid;
@@ -122,18 +124,43 @@ public class MainActivity extends AppCompatActivity {
                     minaBirth = simpleDateFormat.parse(birth);
                     myBirth = simpleDateFormat.parse(mbirth);
                     ConnectFireBaseDB.postSchedule(true, 1, 2, 3, simpleDateFormat.format(minaBirth), simpleDateFormat.format(myBirth), "미나 생일", "이쁜이 미나", "영규", "방구석", 4);
-                }
-                catch (Exception E){
+                } catch (Exception E) {
                     Log.d("mina", "love");
                 }
             }
         });
 
-        sheduleReceiveButton = (Button)findViewById(R.id.Schedule_testReceiveButton);
+        sheduleReceiveButton = (Button) findViewById(R.id.Schedule_testReceiveButton);
         sheduleReceiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConnectFireBaseDB.ScheduleRead();
+            }
+        });
+
+        revisionSendButton = (Button) findViewById((R.id.Revision_testSendButton));
+        revisionSendButton.setOnClickListener(new View.OnClickListener() {
+            String birth = "1997-03-24";
+            Date minaBirth;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    minaBirth = simpleDateFormat.parse(birth);
+                    ConnectFireBaseDB.postRevision(true, 1, 2, simpleDateFormat.format(minaBirth), "미나좋아", "강영규");
+                } catch (Exception e) {
+                    Log.d("mina", "love");
+                }
+            }
+        });
+
+        revisionReceiveButton = (Button) findViewById(R.id.Revision_testReceiveButton);
+        revisionReceiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("revisionReceiveButton", "clicked");
+                ConnectFireBaseDB.RevisionRead();
             }
         });
 
