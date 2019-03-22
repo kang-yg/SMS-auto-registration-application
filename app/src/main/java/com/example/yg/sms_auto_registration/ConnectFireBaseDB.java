@@ -11,6 +11,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,10 +111,8 @@ public class ConnectFireBaseDB {
                     firebaseDB_group.setUserUID(arrayUID.get(i));
                 }
 
-
                 int groupNum = Integer.parseInt(String.valueOf(arrayList.get(2)));
                 firebaseDB_group.setGroupNumber(groupNum);
-
             }
 
             @Override
@@ -126,5 +125,69 @@ public class ConnectFireBaseDB {
 
     /*---------------------------------------------------------------------------------------------------------------------*/
     //Schedule
+
+    public static void postSchedule(boolean _add, int _scheduleNumber, int _scheduleGroupNumber, int _scheduleClassification, String _startDate, String _endDate, String _scheduleTitle, String _scheduleContent, String _scheduleWriter, String _schedulePlace, int _scheduleRepeat) {
+        myRef = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object> childUpdate = new HashMap<>();
+        Map<String, Object> postValue = null;
+        if (_add) {
+            FirebaseDB_Schedule post = new FirebaseDB_Schedule(_scheduleNumber, _scheduleGroupNumber, _scheduleClassification, _startDate, _endDate, _scheduleTitle, _scheduleContent, _scheduleWriter, _schedulePlace, _scheduleRepeat);
+            postValue = post.toMap();
+        }
+        childUpdate.put("/GroupSchedule/" + _scheduleNumber, postValue);
+        myRef.updateChildren(childUpdate);
+    }
+
+    public static void ScheduleRead() {
+        myRef = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FirebaseDB_Schedule firebaseDB_schedule = new FirebaseDB_Schedule();
+                ArrayList<String> arrayList = new ArrayList<>();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Object objectValue = postSnapshot.getValue();
+                    HashMap<String, String> data = (HashMap<String, String>) objectValue;
+                    for (String k : data.keySet()) {
+                        arrayList.add(data.get(k));
+                    }
+                }
+                firebaseDB_schedule.setStartDate(arrayList.get(0));
+
+                firebaseDB_schedule.setScheduleTitle(arrayList.get(1));
+
+                int scheduleNumber = Integer.parseInt(String.valueOf(arrayList.get(2)));
+                firebaseDB_schedule.setScheduleNumber(scheduleNumber);
+
+                int scheduleGroupNumber = Integer.parseInt(String.valueOf(arrayList.get(3)));
+                firebaseDB_schedule.setScheduleGroupNumber(scheduleGroupNumber);
+
+                firebaseDB_schedule.setScheduleContent(arrayList.get(4));
+
+                int scheduleRepeat = Integer.parseInt(String.valueOf(arrayList.get(5)));
+                firebaseDB_schedule.setScheduleRepeat(scheduleRepeat);
+
+                firebaseDB_schedule.setScheduleWriter(arrayList.get(6));
+
+                int scheduleClassification = Integer.parseInt(String.valueOf(arrayList.get(7)));
+                firebaseDB_schedule.setScheduleClassification(scheduleClassification);
+
+                firebaseDB_schedule.setSchedulePlace(arrayList.get(8));
+
+                firebaseDB_schedule.setEndDate(arrayList.get(9));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        Query query = FirebaseDatabase.getInstance().getReference().child("GroupSchedule");
+        query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    /*---------------------------------------------------------------------------------------------------------------------*/
+    //Revision history
+
 
 }

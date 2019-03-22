@@ -11,24 +11,36 @@
         android:id="@+id/User_testSendButton"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:text="sendToFireDB"/>
+        android:text="User sendToFireDB"/>
     
     <Button
         android:id="@+id/User_testReceiveButton"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:text="receiveFromFireDB"/>
+        android:text="User receiveFromFireDB"/>
 
     <Button
         android:id="@+id/Group_testSendButton"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:text="receiveFromFireDB"/>
+        android:text="Group receiveFromFireDB"/>
 
     <Button
         android:id="@+id/Group_testReceiveButton"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:text="receiveFromFireDB"/>
+        android:text="Group receiveFromFireDB"/>
+
+    <Button
+        android:id="@+id/Schedule_testSendButton"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="Schedule receiveFromFireDB"/>
+
+    <Button
+        android:id="@+id/Schedule_testReceiveButton"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:text="Schedule receiveFromFireDB"/>
 
 </LinearLayout>

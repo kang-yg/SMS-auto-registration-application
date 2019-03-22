@@ -16,7 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     Button userReceiveButton;
     Button groupSendButton;
     Button groupReceiveButton;
+    Button sheduleSendButton;
+    Button sheduleReceiveButton;
 
     String providerId;
     String uid;
@@ -39,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
 
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.RECEIVE_SMS)){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
             Toast.makeText(this, "SMS 권한 설정이 필요함", Toast.LENGTH_SHORT).show();
         } else {
             // 권한이 할당되지 않았으면 해당 권한을 요청
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.RECEIVE_SMS},1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, 1);
         }
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -65,21 +69,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d("myInfoFirebase", "providerId : " + providerId);
         Log.d("myInfoFirebase", "uid : " + uid);
         Log.d("myInfoFirebase", "name : " + name);
-        Log.d("myInfoFirebase", "email : " +  email);
+        Log.d("myInfoFirebase", "email : " + email);
 
-        userSendButton = (Button)findViewById(R.id.User_testSendButton);
+        userSendButton = (Button) findViewById(R.id.User_testSendButton);
         userSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectFireBaseDB.postUser(true, name, email, uid,providerId);
+                ConnectFireBaseDB.postUser(true, name, email, uid, providerId);
             }
         });
 
-        userReceiveButton = (Button)findViewById(R.id.User_testReceiveButton);
+        userReceiveButton = (Button) findViewById(R.id.User_testReceiveButton);
         userReceiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("abc","clicked");
+                Log.d("abc", "clicked");
                 ConnectFireBaseDB.UserRead();
             }
         });
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         testGroupUID.add("박보영");
         testGroupUID.add("한효주");
 
-        groupSendButton = (Button)findViewById(R.id.Group_testSendButton);
+        groupSendButton = (Button) findViewById(R.id.Group_testSendButton);
         groupSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        groupReceiveButton = (Button)findViewById(R.id.Group_testReceiveButton);
+        groupReceiveButton = (Button) findViewById(R.id.Group_testReceiveButton);
         groupReceiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,8 +109,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        sheduleSendButton = (Button) findViewById(R.id.Schedule_testSendButton);
+        sheduleSendButton.setOnClickListener(new View.OnClickListener() {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String birth = "1997-03-24";
+            String mbirth = "1995-09-18";
+            Date minaBirth, myBirth;
 
+            @Override
+            public void onClick(View v) {
+                try {
+                    minaBirth = simpleDateFormat.parse(birth);
+                    myBirth = simpleDateFormat.parse(mbirth);
+                    ConnectFireBaseDB.postSchedule(true, 1, 2, 3, simpleDateFormat.format(minaBirth), simpleDateFormat.format(myBirth), "미나 생일", "이쁜이 미나", "영규", "방구석", 4);
+                }
+                catch (Exception E){
+                    Log.d("mina", "love");
+                }
+            }
+        });
 
+        sheduleReceiveButton = (Button)findViewById(R.id.Schedule_testReceiveButton);
+        sheduleReceiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectFireBaseDB.ScheduleRead();
+            }
+        });
 
     }
 }
