@@ -30,6 +30,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-database:16.1.0'//add by YG
+    implementation 'de.hdodenhof:circleimageview:2.0.0'//add by SJ
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3' //캘린더
+    implementation 'com.android.support:recyclerview-v7:27.1.1' //add by HJ
+    implementation 'com.android.support:design:27.1.1'  //add by HJ
 }
 
 apply plugin: 'com.google.gms.google-services'

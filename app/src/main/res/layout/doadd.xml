@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/do_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bottom_edge"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_arrow_back_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/do_add"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/do_top"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/title"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/title"
+            android:textColor="@color/black"
+            android:background="@drawable/bottom_edge" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_content"
+            android:layout_width="330dp"
+            android:layout_height="100dp"
+            android:layout_alignStart="@+id/content"
+            android:layout_below="@+id/content"
+            android:background="@drawable/white_all_edge"
+            android:textColor="@color/black"
+            android:gravity="top" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/time"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/start_time"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/time"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/time"
+            android:background="@color/white"
+            android:text="AM 12:00"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/stand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/start_time"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/start_time"
+            android:text="~"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/end_time"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/stand"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/stand"
+            android:background="@color/white"
+            android:text="AM 12:00"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/date"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/datepick"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/date"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/date"
+            android:background="@color/white"
+            android:text="1900년 01월 01일"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/alram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/alram"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/alram_spinner"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/alram"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/alram"
+            android:background="@android:color/transparent"
+            android:entries="@array/alramspinner"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/alram"
+            android:layout_toEndOf="@+id/alram_spinner"
+            android:background="@drawable/alram_icon" />
+
+
+        <TextView
+            android:id="@+id/date_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alram"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/date_repeat"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/repeat_one"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/date_repeat"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/date_repeat"
+            android:background="@drawable/all_round"
+            android:text="@string/eve_month"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/repeate_two"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/date_repeat"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/repeat_one"
+            android:background="@drawable/all_round"
+            android:text="@string/eve_year"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/do_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/cancel"
+            android:text="@string/cancel"
+            android:textColor="@color/black" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/confirm"
+            android:text="@string/confirm"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</RelativeLayout>

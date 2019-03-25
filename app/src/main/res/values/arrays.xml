@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--스피너 아이템-->
+<resources>
+    <string-array name="grouparray">
+        <item> 그룹캘린더1 </item>
+        <item> + </item>
+    </string-array>
+
+</resources>
