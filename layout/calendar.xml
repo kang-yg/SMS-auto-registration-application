@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?><!--캘린더 화면-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--배경이 될 Layout-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <!--상단바 메뉴-->
+            <Button
+                android:id="@+id/OpenDrawer_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/ic_menu_black_24dp" />
+            <!--상단바 년월-->
+            <TextView
+                android:id="@+id/txt_YearMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:paddingTop="5dp"
+                android:text="@string/year_month"
+                android:textColor="@color/black"
+                android:textSize="35dp" />
+            <!--today 버튼 -->
+
+            <Button
+                android:id="@+id/ShowToday_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ic_date_range_black_24dp" />
+            <!--today 글-->
+            <TextView
+                android:id="@+id/txt_Today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/ShowToday_btn"
+                android:layout_marginRight="5dp"
+                android:text="Today"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="10dp" />
+
+            <!--보기방식 버튼-->
+            <Button
+                android:id="@+id/ViewType_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/ShowToday_btn"
+                android:background="@drawable/ic_visibility_black_24dp" />
+            <!--보기방식 글-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ShowToday_btn"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/txt_Today"
+                android:text="@string/show"
+                android:textColor="@color/black"
+                android:textSize="10dp" />
+
+            <!--개인,그룹 토글버튼 그룹-->
+            <LinearLayout
+                android:id="@+id/toggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_YearMonth"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <!--개인 캘린더 버튼-->
+                <Button
+                    android:id="@+id/Personal_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="-4dp"
+                    android:layout_weight="65"
+                    android:background="@color/skyblue"
+                    android:text="@string/personal_Caleandar"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+                <!--그룹 캘린더 버튼-->
+                <Button
+                    android:id="@+id/Group_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="25"
+                    android:background="@color/lightgray"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+                <!--스피너-->
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="2dp"
+                    android:layout_height="51dp"
+                    android:layout_marginBottom="-2dp"
+                    android:layout_marginLeft="-1dp"
+                    android:layout_marginTop="-10dp"
+                    android:layout_weight="10"
+                    android:background="@color/lightgray"
+                    android:entries="@array/grouparray"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+            <!--플로팅 버튼-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/add"
+                app:backgroundTint="@color/green"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
+            <!--일정등록 플로팅-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="83dp"
+                android:layout_marginEnd="22dp"
+                android:src="@drawable/ic_schedule_edit_black_24dp"
+                android:visibility="invisible"
+                app:backgroundTint="@color/green"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
+            <!--할일등록 플로팅-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="140dp"
+                android:layout_marginEnd="22dp"
+                android:src="@drawable/ic_todo_black_24dp"
+                android:visibility="invisible"
+                app:backgroundTint="@color/green"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
+
+            <!--기념일 등록 플로팅-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="195dp"
+                android:layout_marginEnd="22dp"
+                android:src="@drawable/ic_event_available_black_24dp"
+                android:visibility="invisible"
+                app:backgroundTint="@color/green"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
+            <!--뷰 페이저-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/toggle"></android.support.v4.view.ViewPager>
+
+
+        </RelativeLayout>
+
+        <!--드로어 화면이 될 Layout-->
+        <RelativeLayout
+            android:id="@+id/drawer"
+            android:layout_width="230dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white">
+
+            <!--설정버튼-->
+            <Button
+                android:id="@+id/setting_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_settings_black_24dp" />
+
+            <!--검색버튼-->
+            <Button
+                android:id="@+id/search_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toLeftOf="@+id/setting_btn"
+                android:background="@drawable/ic_search_black_24dp" />
+            <!--유저 이미지 그룹-->
+            <LinearLayout
+                android:id="@+id/user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/setting_btn">
+
+                <!--프로필 이미지-->
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app='http://schemas.android.com/apk/res-auto'
+                    android:id="@+id/img_UserImage"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/iu"
+                    app:civ_border_width="1dp" />
+
+                <!--사용자 이메일-->
+                <TextView
+                    android:id="@+id/txt_UserId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/img_UserImage"
+                    android:text="fbtmdwhd33@naver.com"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <!--구분선-->
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0.5dp"
+                android:layout_alignTop="@+id/txt_Logout"
+                android:layout_marginTop="3dp"
+                android:background="@color/black" />
+
+            <!--로그아웃 텍스트-->
+            <TextView
+                android:id="@+id/txt_Logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user"
+                android:gravity="right"
+                android:text="@string/logout"
+                android:textColor="@color/black" />
+
+            <!--메뉴 버튼 그룹-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_Logout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_layout"
+                    android:padding="15dp"
+                    android:text="@string/SMS_list"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round_layout"
+                    android:padding="15dp"
+                    android:text="@string/schedule_list"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round_layout"
+                    android:padding="15dp"
+                    android:text="@string/do_list"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/round_layout"
+                    android:padding="15dp"
+                    android:text="@string/anniver_list"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+</FrameLayout>
