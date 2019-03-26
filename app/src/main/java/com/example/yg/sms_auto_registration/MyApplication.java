@@ -4,7 +4,7 @@ import android.app.Application;
 
 public class MyApplication extends Application {
     static FirebaseDB_User[] firebaseDB_user = new FirebaseDB_User[50];
-    static int userCount = 0 ;
+    static int userCount;
 
     static String localUser_name;
     static String localUser_email;

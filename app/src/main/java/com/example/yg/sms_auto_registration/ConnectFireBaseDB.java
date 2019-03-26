@@ -55,6 +55,7 @@ public class ConnectFireBaseDB {
 
                 for(int i = 0 ; i < arrayList.size()/4 ; i++){
                     MyApplication.firebaseDB_user[i] = new FirebaseDB_User();
+                    MyApplication.userCount = 0;
                     MyApplication.firebaseDB_user[i].setProviderID(arrayList.get(i*4));
                     MyApplication.firebaseDB_user[i].setUserUID(arrayList.get(i*4+1));
                     MyApplication.firebaseDB_user[i].setGoogleID(arrayList.get(i*4+2));
