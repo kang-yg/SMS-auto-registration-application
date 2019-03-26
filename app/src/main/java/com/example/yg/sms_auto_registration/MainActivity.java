@@ -75,6 +75,18 @@ public class MainActivity extends AppCompatActivity {
 
         ConnectFireBaseDB.postUser(true, name, email, uid, providerId);
 
+        MyApplication.localUser_name = name;
+        MyApplication.localUser_email = email;
+        MyApplication.localUser_uid = uid;
+        MyApplication.localUser_providerId = providerId;
+
+        Log.d("myInfoLocal", "providerId : " + MyApplication.localUser_providerId);
+        Log.d("myInfoLocal", "uid : " + MyApplication.localUser_uid);
+        Log.d("myInfoLocal", "name : " + MyApplication.localUser_name);
+        Log.d("myInfoLocal", "email : " + MyApplication.localUser_email);
+
+
+
         //년월바 객체
         topbar = (TextView) findViewById(R.id.txt_YearMonth);
         //주단위보기 텍스트 객체

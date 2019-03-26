@@ -42,7 +42,7 @@ public class ConnectFireBaseDB {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseDB_User firebaseDB_user = new FirebaseDB_User();
+
                 ArrayList<String> arrayList = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Object objectValue = postSnapshot.getValue();
@@ -52,14 +52,26 @@ public class ConnectFireBaseDB {
 //                        Log.d("UserRead", "data[" + k + "]: " + data.get(k));
                     }
                 }
-                firebaseDB_user.setProviderID(arrayList.get(0));
+
+                for(int i = 0 ; i < arrayList.size()/4 ; i++){
+                    MyApplication.firebaseDB_user[i] = new FirebaseDB_User();
+                    MyApplication.firebaseDB_user[i].setProviderID(arrayList.get(i*4));
+                    MyApplication.firebaseDB_user[i].setUserUID(arrayList.get(i*4+1));
+                    MyApplication.firebaseDB_user[i].setGoogleID(arrayList.get(i*4+2));
+                    MyApplication.firebaseDB_user[i].setUserName(arrayList.get(i*4+3));
+                    MyApplication.userCount++;
+                }
+
+/*                firebaseDB_user.setProviderID(arrayList.get(0));
                 firebaseDB_user.setUserUID(arrayList.get(1));
                 firebaseDB_user.setGoogleID(arrayList.get(2));
-                firebaseDB_user.setUserName(arrayList.get(3));
-                Log.d("UserRead", "getProviderID : " + firebaseDB_user.getProviderID());
-                Log.d("UserRead", "getUserUID : " + firebaseDB_user.getUserUID());
-                Log.d("UserRead", "getGoogleID : " + firebaseDB_user.getGoogleID());
-                Log.d("UserRead", "getUserName : " + firebaseDB_user.getUserName());
+                firebaseDB_user.setUserName(arrayList.get(3));*/
+                for(int i = 0 ; i < arrayList.size()/4 ; i++) {
+                    Log.d("UserRead", "getProviderID : " + MyApplication.firebaseDB_user[i].getProviderID());
+                    Log.d("UserRead", "getUserUID : " + MyApplication.firebaseDB_user[i].getUserUID());
+                    Log.d("UserRead", "getGoogleID : " + MyApplication.firebaseDB_user[i].getGoogleID());
+                    Log.d("UserRead", "getUserName : " + MyApplication.firebaseDB_user[i].getUserName());
+                }
             }
 
             @Override

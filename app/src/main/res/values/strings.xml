@@ -53,5 +53,7 @@
     <string name="group_Caleandar">그룹 캘린더</string>
     <string name="spiner_promp">choose option</string>
     <string name="group_warn">생성된 그룹캘린더가 없습니다!</string>
+    <string name="groupAdd_invite_hint">UID를 입력하세요.\n(&quot;,&quot;로 구분)</string>
+
 
 </resources>
