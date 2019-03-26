@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--오늘날짜 클릭시 올라오는 애니메이션-->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="0"
+    android:fromYDelta="100%p"
+    android:toYDelta="0%p">
+    </translate>
+
+
+

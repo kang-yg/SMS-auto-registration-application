@@ -28,6 +28,7 @@
         android:layout_below="@+id/img_Warning"/>
 
     <Button
+        android:id="@+id/btn_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/group_add"
@@ -50,4 +51,74 @@
         app:backgroundTint="@color/green"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
+    <!--일정등록 플로팅-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="83dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_schedule_edit_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+    <!--할일등록 플로팅-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_todo_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
+    <!--기념일 등록 플로팅-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="195dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_event_available_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="250dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_group_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="304dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_changed_list_numbered_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
 </RelativeLayout>

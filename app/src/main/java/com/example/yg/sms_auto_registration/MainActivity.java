@@ -2,34 +2,35 @@
 package com.example.yg.sms_auto_registration;
 
 import android.Manifest;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button userSendButton;
-    Button userReceiveButton;
-    Button groupSendButton;
-    Button groupReceiveButton;
-    Button sheduleSendButton;
-    Button sheduleReceiveButton;
-    Button revisionSendButton;
-    Button revisionReceiveButton;
+    private ViewPager vp; //프래그먼트 표시 뷰 페이저
+    private Button viewtype_btn, personal_btn, group_btn, today_btn;//보기방식, 개인캘린더, 그룹캘린더 버튼
+    private Spinner spinner;//그룹캘린더 스피너
+    private TextView topbar, viewtype_txt, today_txt;//캘린더 년월 표시 텍스트뷰
+    PersonalFragment personalFragment = null;
 
     String providerId;
     String uid;
@@ -37,12 +38,11 @@ public class MainActivity extends AppCompatActivity {
     String email;
     Uri photoUrl;
 
-    ArrayList<String> testGroupUID = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.calendar);
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECEIVE_SMS)) {
@@ -73,96 +73,164 @@ public class MainActivity extends AppCompatActivity {
         Log.d("myInfoFirebase", "name : " + name);
         Log.d("myInfoFirebase", "email : " + email);
 
-        userSendButton = (Button) findViewById(R.id.User_testSendButton);
-        userSendButton.setOnClickListener(new View.OnClickListener() {
+        ConnectFireBaseDB.postUser(true, name, email, uid, providerId);
+
+        //년월바 객체
+        topbar = (TextView) findViewById(R.id.txt_YearMonth);
+        //주단위보기 텍스트 객체
+        viewtype_txt = (TextView) findViewById(R.id.txt_ViewType);
+        //오늘보기 텍스트 객체
+        today_txt = (TextView) findViewById(R.id.txt_Today);
+
+        // 전체화면인 DrawerLayout 객체 참조
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // Drawer 화면(뷰) 객체 참조
+        final View drawerView = (View) findViewById(R.id.drawer);
+
+
+        // 드로어 화면을 열고 닫을 버튼 객체 참조
+        Button OpenDrawerbtn = (Button) findViewById(R.id.OpenDrawer_btn);
+
+
+        // 드로어 여는 버튼 리스너
+        OpenDrawerbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectFireBaseDB.postUser(true, name, email, uid, providerId);
+                drawerLayout.openDrawer(drawerView);
             }
         });
 
-        userReceiveButton = (Button) findViewById(R.id.User_testReceiveButton);
-        userReceiveButton.setOnClickListener(new View.OnClickListener() {
+        // 스피너 어뎁터 및 레이아웃 부착
+        group_btn = (Button) findViewById(R.id.Group_btn);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        String[] str = getResources().getStringArray(R.array.grouparray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, str);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        //그룹캘린더 버튼 텍스트 설정, 수정필요
+        String text = spinner.getSelectedItem().toString();
+        group_btn.setText(text);
+
+        //뷰페이저 설정
+        vp = (ViewPager) findViewById(R.id.viewpager);
+        personal_btn = (Button) findViewById(R.id.Personal_btn);
+        viewtype_btn = (Button) findViewById(R.id.ViewType_btn);
+        vp.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        vp.setCurrentItem(0);
+
+
+        today_btn = (Button) findViewById(R.id.ShowToday_btn);
+        today_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("abc", "clicked");
-                ConnectFireBaseDB.UserRead();
+                personalFragment.SetToday();
+            }
+        });
+        today_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                personalFragment.SetToday();
+
             }
         });
 
+        //개인, 그룹캘린더 버튼 클릭리스너
 
-        testGroupUID.add("미나");
-        testGroupUID.add("박보영");
-        testGroupUID.add("한효주");
+        personal_btn.setOnClickListener(movePageListener);
+        personal_btn.setTag(0);
+        group_btn.setOnClickListener(movePageListener);
+        group_btn.setTag(1);
+        viewtype_btn.setOnClickListener(movePageListener);
+        viewtype_btn.setTag(2);
+        viewtype_txt.setOnClickListener(movePageListener);
+        viewtype_txt.setTag(2);
 
-        groupSendButton = (Button) findViewById(R.id.Group_testSendButton);
-        groupSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConnectFireBaseDB.postGroup(true, 1, testGroupUID, "이쁜이들");
+
+    }
+
+
+    //버튼 클릭 리스너
+    View.OnClickListener movePageListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            int tag = (int) v.getTag();
+            vp.setCurrentItem(tag);
+            if (tag == 0) {//개인 캘린더 버튼 클릭 시 버튼색상 변경
+                personal_btn.setBackgroundResource(R.color.skyblue);
+                group_btn.setBackgroundResource(R.color.lightgray);
+                spinner.setBackgroundResource(R.color.lightgray);
+            } else if (tag == 1) {//그룹 캘린더 버튼 클릭 시 버튼색상 변경
+                personal_btn.setBackgroundResource(R.color.lightgray);
+                group_btn.setBackgroundResource(R.color.skyblue);
+                spinner.setBackgroundResource(R.color.skyblue);
             }
-        });
+        }
+    };
 
-        groupReceiveButton = (Button) findViewById(R.id.Group_testReceiveButton);
-        groupReceiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConnectFireBaseDB.GroupRead();
+
+    public void openSetting(View view) {
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
+    }
+
+    public void openSearch(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
+    public void openEnrolledlist(View view) {
+        Intent intent = new Intent(this, SmsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openTodolist(View view) {
+        Intent intent = new Intent(this, TodoActivity.class);
+        startActivity(intent);
+    }
+
+    public void openSchedulelist(View view) {
+        Intent intent = new Intent(this, SchedulelistActivitiy.class);
+        startActivity(intent);
+    }
+
+    public void openAnniversarylist(View view) {
+        Intent intent = new Intent(this, AnniversarylistActivity.class);
+        startActivity(intent);
+    }
+
+
+    //페이저 어댑터
+    private static class pagerAdapter extends FragmentStatePagerAdapter {
+        public pagerAdapter(android.support.v4.app.FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public android.support.v4.app.Fragment getItem(int position)//프래그먼트 position 값에 따라 프래그먼트 생성
+        {
+            switch (position) {
+                case 0:
+                    return new PersonalFragment();
+                case 1:
+                    return new GroupFragment();
+                case 2:
+                    return new ViewtypeFragment();
+
+                default:
+                    return null;
             }
-        });
+        }
 
-        sheduleSendButton = (Button) findViewById(R.id.Schedule_testSendButton);
-        sheduleSendButton.setOnClickListener(new View.OnClickListener() {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String birth = "1997-03-24";
-            String mbirth = "1995-09-18";
-            Date minaBirth, myBirth;
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
 
-            @Override
-            public void onClick(View v) {
-                try {
-                    minaBirth = simpleDateFormat.parse(birth);
-                    myBirth = simpleDateFormat.parse(mbirth);
-                    ConnectFireBaseDB.postSchedule(true, 1, 2, 3, simpleDateFormat.format(minaBirth), simpleDateFormat.format(myBirth), "미나 생일", "이쁜이 미나", "영규", "방구석", 4);
-                } catch (Exception E) {
-                    Log.d("mina", "love");
-                }
-            }
-        });
-
-        sheduleReceiveButton = (Button) findViewById(R.id.Schedule_testReceiveButton);
-        sheduleReceiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConnectFireBaseDB.ScheduleRead();
-            }
-        });
-
-        revisionSendButton = (Button) findViewById((R.id.Revision_testSendButton));
-        revisionSendButton.setOnClickListener(new View.OnClickListener() {
-            String birth = "1997-03-24";
-            Date minaBirth;
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            @Override
-            public void onClick(View v) {
-                try {
-                    minaBirth = simpleDateFormat.parse(birth);
-                    ConnectFireBaseDB.postRevision(true, 1, 2, simpleDateFormat.format(minaBirth), "미나좋아", "강영규");
-                } catch (Exception e) {
-                    Log.d("mina", "love");
-                }
-            }
-        });
-
-        revisionReceiveButton = (Button) findViewById(R.id.Revision_testReceiveButton);
-        revisionReceiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("revisionReceiveButton", "clicked");
-                ConnectFireBaseDB.RevisionRead();
-            }
-        });
-
+    public void ChangeTopbar(String text) { //캘린더의 topbar 변경 메소드
+        topbar.setText(text);
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="175dp"
+    android:layout_marginLeft="-1dp"
+    android:layout_marginTop="-5dp"
+    android:background="@drawable/list_border">
+    <TextView
+        android:id="@+id/txt_Viewweek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/todo_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txt_Viewweek"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_margin="5dp"/>
+
+</RelativeLayout>

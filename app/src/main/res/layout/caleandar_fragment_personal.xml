@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/personal_fragment">
+
     <!-- Material calendar-->
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,6 +34,50 @@
         app:backgroundTint="@color/green"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
+    <!--일정등록 플로팅-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="83dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_schedule_edit_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+    <!--할일등록 플로팅-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_todo_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
+    <!--기념일 등록 플로팅-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="195dp"
+        android:layout_marginEnd="22dp"
+        android:src="@drawable/ic_event_available_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/green"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
+
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -47,30 +93,11 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="24dp" />
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/slide_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/txt_slide_today"
-            >
-            <TextView
-                android:id="@+id/txt_example"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:text="화장실가기"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="170dp"
-                android:background="@color/lightgray"
-                />
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="35dp"/>
 
 
     </RelativeLayout>

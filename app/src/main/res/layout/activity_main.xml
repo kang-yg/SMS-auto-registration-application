@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="40sp"
         android:text="User sendToFireDB"/>
-    
+
     <Button
         android:id="@+id/User_testReceiveButton"
         android:layout_width="match_parent"

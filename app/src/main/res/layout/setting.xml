@@ -17,6 +17,7 @@
             android:layout_width="40dp"
             android:layout_height="35dp"
             android:layout_centerVertical="true"
+            android:onClick="backWard"
             android:background="@drawable/ic_arrow_back_black_24dp" />
 
         <TextView
@@ -42,14 +43,15 @@
 
         <TextView
             android:id="@+id/one"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:text="@string/pattern"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:onClick="openSmsPattern"/>
 
         <TextView
             android:id="@+id/two"
@@ -115,7 +117,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/one"
             android:layout_marginEnd="17dp"
-            android:background="@drawable/right_icon" />
+            android:background="@drawable/right_icon"
+            android:onClick="openSmsPattern"/>
 
         <TextView
             android:layout_width="wrap_content"

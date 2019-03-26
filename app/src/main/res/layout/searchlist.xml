@@ -17,6 +17,7 @@
             android:layout_width="40dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
+            android:onClick="backWard"
             android:background="@drawable/ic_arrow_back_black_24dp" />
 
         <TextView

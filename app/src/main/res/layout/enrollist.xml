@@ -17,6 +17,7 @@
             android:layout_height="35dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
+            android:onClick="backWard"
             android:background="@drawable/ic_arrow_back_black_24dp" />
 
         <TextView
@@ -33,7 +34,7 @@
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/enlist_recycler_view"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/enroll_top"
