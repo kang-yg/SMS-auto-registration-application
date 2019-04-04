@@ -3,6 +3,10 @@ package com.example.yg.sms_auto_registration;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +21,6 @@ import java.util.Map;
 
 public class ConnectFireBaseDB {
     private static DatabaseReference myRef;
-
 
     /*---------------------------------------------------------------------------------------------------------------------*/
     //User
@@ -37,9 +40,11 @@ public class ConnectFireBaseDB {
     }
 
     public static void UserRead() {
+        Log.d("UserRead", "start UserRead");
         myRef = FirebaseDatabase.getInstance().getReference();
 
         ValueEventListener valueEventListener = new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -52,32 +57,38 @@ public class ConnectFireBaseDB {
 //                        Log.d("UserRead", "data[" + k + "]: " + data.get(k));
                     }
                 }
+/*                for(int i = 0 ; i < arrayList.size()/4 ; i++){
+                    MyApplication.setFirebaseDB_user(i,arrayList.get(i*4),arrayList.get(i*4+1),arrayList.get(i*4+2),arrayList.get(i*4+3));
+                }*/
 
                 for(int i = 0 ; i < arrayList.size()/4 ; i++){
-                    MyApplication.firebaseDB_user[i] = new FirebaseDB_User();
-                    MyApplication.userCount = 0;
-                    MyApplication.firebaseDB_user[i].setProviderID(arrayList.get(i*4));
-                    MyApplication.firebaseDB_user[i].setUserUID(arrayList.get(i*4+1));
-                    MyApplication.firebaseDB_user[i].setGoogleID(arrayList.get(i*4+2));
-                    MyApplication.firebaseDB_user[i].setUserName(arrayList.get(i*4+3));
-                    MyApplication.userCount++;
+                    MyApplication.firebaseDB_user.add(new FirebaseDB_User());
+                    MyApplication.firebaseDB_user.get(i).setProviderID(arrayList.get(i*4));
+                    MyApplication.firebaseDB_user.get(i).setUserUID(arrayList.get(i*4+1));
+                    MyApplication.firebaseDB_user.get(i).setGoogleID(arrayList.get(i*4+2));
+                    MyApplication.firebaseDB_user.get(i).setUserName(arrayList.get(i*4+3));
+
+                    Log.d("UserRead", MyApplication.firebaseDB_user.get(i).getUserUID());
+
                 }
 
 /*                firebaseDB_user.setProviderID(arrayList.get(0));
                 firebaseDB_user.setUserUID(arrayList.get(1));
                 firebaseDB_user.setGoogleID(arrayList.get(2));
                 firebaseDB_user.setUserName(arrayList.get(3));*/
-                for(int i = 0 ; i < arrayList.size()/4 ; i++) {
+/*                for(int i = 0 ; i < arrayList.size()/4 ; i++) {
                     Log.d("UserRead", "getProviderID : " + MyApplication.firebaseDB_user[i].getProviderID());
                     Log.d("UserRead", "getUserUID : " + MyApplication.firebaseDB_user[i].getUserUID());
                     Log.d("UserRead", "getGoogleID : " + MyApplication.firebaseDB_user[i].getGoogleID());
                     Log.d("UserRead", "getUserName : " + MyApplication.firebaseDB_user[i].getUserName());
-                }
+                }*/
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
+
         };
         Query query = FirebaseDatabase.getInstance().getReference().child("User");
         query.addListenerForSingleValueEvent(valueEventListener);
@@ -116,7 +127,48 @@ public class ConnectFireBaseDB {
                     }
                 }
 
-                firebaseDB_group.setGroupName(arrayList.get(0));
+                for (int p = 0; p < arrayList.size() / 3; p++) {
+                    MyApplication.firebaseDB_groups.add(new FirebaseDB_Group());
+                    MyApplication.firebaseDB_groups.get(p).setGroupName(arrayList.get(p * 3));
+                    Object objectValue = arrayList.get(p * 3 + 1);
+                    ArrayList<String> arrayUID = (ArrayList<String>) objectValue;
+                    for (int j = 0; j < arrayUID.size(); j++) {
+                        MyApplication.firebaseDB_groups.get(p).setUserUID(arrayUID.get(j));
+                    }
+                    int groupNum = Integer.parseInt(String.valueOf(arrayList.get(p * 3 + 2)));
+                    MyApplication.firebaseDB_groups.get(p).setGroupNumber(groupNum);
+
+                }
+
+                //Add GroupCalendar spinner
+                ArrayList<String> spinnerArrayList = new ArrayList<>();
+
+                Log.d("GroupRead", Integer.toString(MyApplication.firebaseDB_groups.size()));
+                for(int i = 0 ; i < MyApplication.firebaseDB_groups.size() ; i++){
+                    spinnerArrayList.add(MyApplication.firebaseDB_groups.get(i).getGroupName());
+                }
+                final MainSingleton mainSingleton = MainSingleton.getInstance();
+
+                ArrayAdapter<String> adp = new ArrayAdapter<String> (mainSingleton.activity, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
+
+                mainSingleton.spinner.setAdapter(adp);
+
+                mainSingleton.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("spinner", Long.toString(mainSingleton.spinner.getItemIdAtPosition(position)));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                //그룹캘린더 버튼 텍스트 설정, 수정필요
+                String text = mainSingleton.spinner.getSelectedItem().toString();
+                mainSingleton.group_btn.setText(text);
+
+/*                firebaseDB_group.setGroupName(arrayList.get(0));
 
                 Object objectValue = arrayList.get(1);
                 ArrayList<String> arrayUID = (ArrayList<String>) objectValue;
@@ -125,7 +177,8 @@ public class ConnectFireBaseDB {
                 }
 
                 int groupNum = Integer.parseInt(String.valueOf(arrayList.get(2)));
-                firebaseDB_group.setGroupNumber(groupNum);
+                firebaseDB_group.setGroupNumber(groupNum);*/
+
             }
 
             @Override
@@ -214,7 +267,7 @@ public class ConnectFireBaseDB {
         myRef.updateChildren(childUpdate);
     }
 
-    public static void RevisionRead(){
+    public static void RevisionRead() {
         myRef = FirebaseDatabase.getInstance().getReference();
 
         ValueEventListener valueEventListener = new ValueEventListener() {

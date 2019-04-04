@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
         fab1.setOnClickListener(new View.OnClickListener() { //일정 등록 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ScheduleAddActivity.class);
+                Log.d("mina", "aaaa");
+                Intent intent = new Intent(getActivity(),AddGroupSchedule.class);
                 startActivity(intent);
             }
         });

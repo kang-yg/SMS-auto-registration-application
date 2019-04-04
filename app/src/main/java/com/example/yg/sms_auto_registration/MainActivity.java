@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.calendar);
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
 
@@ -86,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("myInfoLocal", "email : " + MyApplication.localUser_email);
 
 
-
         //년월바 객체
         topbar = (TextView) findViewById(R.id.txt_YearMonth);
         //주단위보기 텍스트 객체
@@ -113,17 +116,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        MainSingleton mainSingleton = MainSingleton.getInstance();
+
+
         // 스피너 어뎁터 및 레이아웃 부착
         group_btn = (Button) findViewById(R.id.Group_btn);
-        spinner = (Spinner) findViewById(R.id.spinner);
-        String[] str = getResources().getStringArray(R.array.grouparray);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, str);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        mainSingleton.group_btn = (Button) findViewById(R.id.Group_btn);
+        mainSingleton.spinner = (Spinner) findViewById(R.id.spinner);
+        mainSingleton.activity = this;
 
-        //그룹캘린더 버튼 텍스트 설정, 수정필요
-        String text = spinner.getSelectedItem().toString();
-        group_btn.setText(text);
+        ConnectFireBaseDB.GroupRead();
 
         //뷰페이저 설정
         vp = (ViewPager) findViewById(R.id.viewpager);
@@ -144,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 personalFragment.SetToday();
-
             }
         });
 
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (tag == 1) {//그룹 캘린더 버튼 클릭 시 버튼색상 변경
                 personal_btn.setBackgroundResource(R.color.lightgray);
                 group_btn.setBackgroundResource(R.color.skyblue);
-                spinner.setBackgroundResource(R.color.skyblue);
+                //spinner.setBackgroundResource(R.color.skyblue);
             }
         }
     };

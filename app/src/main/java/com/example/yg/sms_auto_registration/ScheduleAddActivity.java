@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 public class ScheduleAddActivity extends Activity implements View.OnClickListener { //일정추가 액티비티
+
     private Button cancel;
     private Button start_date_pick;
     private Button end_date_pick;
@@ -20,7 +22,7 @@ public class ScheduleAddActivity extends Activity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scheadd);
 
-        start_date_pick=(Button)findViewById(R.id.datepick);
+        start_date_pick=(Button)findViewById(R.id.sta_datepick);
         start_date_pick.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -35,7 +37,7 @@ public class ScheduleAddActivity extends Activity implements View.OnClickListene
             public void onClick(View v) {
                 DialogFragment dFragment= new DatePickerFragments();
                 dFragment.show(getFragmentManager(),"Date Picker");
-                Log.d("dFragment", dFragment.getDialog().toString());
+
             }
         });
 

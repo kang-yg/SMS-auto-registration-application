@@ -3,13 +3,18 @@ package com.example.yg.sms_auto_registration;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class NotificationHelper extends ContextWrapper {
 
@@ -71,12 +76,28 @@ public class NotificationHelper extends ContextWrapper {
 
     //now lets create notification
 
+
     public void notify(String message, String title){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(base,CHANNEL_ID);
+        SMSParsing smsParsing = new SMSParsing();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList = smsParsing.extractDate(message);
+        String stringPUT = arrayList.get(0) + arrayList.get(1);
+        Intent intent01 = new Intent(this, ScheduleAddActivity.class);
+        intent01.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent01.putExtra("title",title);
+        intent01.putExtra("message",stringPUT);
+        PendingIntent pendingIntent01 = PendingIntent.getActivity(this, 0, intent01, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent02 = PendingIntent.getActivity(this, 1, new Intent(this, GroupAddActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+
        // Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSmallIcon(R.drawable.garu);      //add
         builder.setContentTitle(title);
         builder.setContentText(message);
+        //add button
+        builder.addAction(R.mipmap.ic_launcher, "확인", pendingIntent01);
+        builder.addAction(R.mipmap.ic_launcher, "최소", pendingIntent02);
        // builder.setSound(notificationUri);
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 

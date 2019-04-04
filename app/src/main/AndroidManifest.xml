@@ -49,6 +49,7 @@
         <activity android:name=".SettingPatternActivity"/>
         <activity android:name=".GrouplistActivity"/>
         <activity android:name=".ChangelistActivity"/>
+        <activity android:name=".AddGroupSchedule"/>
 
     </application>
 </manifest>

@@ -16,9 +16,13 @@ public class SMSReceiver extends BroadcastReceiver {
     private Bundle bundle;
     private SmsMessage currentSMS;
     private String message;
+    private String senderNo;
+    private  String receivedDate;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        NotificationHelper notificationHelper = new NotificationHelper(context);
         if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
             Log.d("SMSBroadcastReceiver", "SMS 메시지가 수신되었습니다.");
             Toast.makeText(context, "문자가 수신되었습니다", Toast.LENGTH_SHORT).show();
@@ -28,13 +32,14 @@ public class SMSReceiver extends BroadcastReceiver {
                 if (pdu_Objects != null) {
                     for (Object aObject : pdu_Objects) {
                         currentSMS = getIncomingMessage(aObject, bundle);
-                        String senderNo = currentSMS.getDisplayOriginatingAddress();
+                        senderNo = currentSMS.getDisplayOriginatingAddress();
                         message = currentSMS.getDisplayMessageBody();
                         Date curDate = new Date(currentSMS.getTimestampMillis());
                         SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-                        String receivedDate = sdf.format( curDate );
+                        receivedDate = sdf.format( curDate );
 
                         Toast.makeText(context, "senderNum: " + senderNo + " :\n message: " + message + "\n time: " + receivedDate, Toast.LENGTH_LONG).show();
+                        notificationHelper.notify(message, senderNo);
                     }
                     this.abortBroadcast();
                     // End of loop

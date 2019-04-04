@@ -133,7 +133,7 @@
             android:background="@drawable/bottom_edge" />
 
         <Button
-            android:id="@+id/datepick"
+            android:id="@+id/sta_datepick"
             android:layout_width="150dp"
             android:layout_height="30dp"
             android:layout_alignTop="@+id/start_date"
