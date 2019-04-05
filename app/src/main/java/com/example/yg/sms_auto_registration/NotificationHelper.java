@@ -77,23 +77,25 @@ public class NotificationHelper extends ContextWrapper {
     //now lets create notification
 
 
-    public void notify(String message, String title){
+    public void notify(String message, String number){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(base,CHANNEL_ID);
         SMSParsing smsParsing = new SMSParsing();
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList = smsParsing.extractDate(message);
-        String stringPUT = arrayList.get(0) + arrayList.get(1);
-        Intent intent01 = new Intent(this, ScheduleAddActivity.class);
+
+        ArrayList<String> parsingStr = new ArrayList<>();
+        parsingStr = smsParsing.checkNumer(number, message);
+
+
+        Intent intent01 = new Intent(this, AddGroupSchedule.class);
         intent01.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent01.putExtra("title",title);
-        intent01.putExtra("message",stringPUT);
+        intent01.putExtra("Title",parsingStr.get(0));
+        //intent01.putExtra("Number",parsingStr.get(1));
         PendingIntent pendingIntent01 = PendingIntent.getActivity(this, 0, intent01, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent pendingIntent02 = PendingIntent.getActivity(this, 1, new Intent(this, GroupAddActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
 
        // Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSmallIcon(R.drawable.garu);      //add
-        builder.setContentTitle(title);
+        builder.setContentTitle(number);
         builder.setContentText(message);
         //add button
         builder.addAction(R.mipmap.ic_launcher, "확인", pendingIntent01);

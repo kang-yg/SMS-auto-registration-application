@@ -2,6 +2,7 @@ package com.example.yg.sms_auto_registration;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,9 +27,16 @@ public class AddGroupSchedule extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scheadd);
         Log.d("mina", "aaaa");
+
+        //Intent intent = getIntent();
+
+        //String autoTitle = intent.getExtras().getString("Title");
+
         editTitel = (EditText) findViewById(R.id.scheadd_title);
         editContent = (EditText) findViewById(R.id.edit_content);
         editPlace = (EditText) findViewById(R.id.scheadd_place);
+
+        //editTitel.setText(autoTitle);
 
         start_date_pick = (Button) findViewById(R.id.sta_datepick);
         start_date_pick.setOnClickListener(new View.OnClickListener() {

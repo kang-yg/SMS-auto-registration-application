@@ -66,6 +66,44 @@ class SMSParsing {
             }
         }
 
+
         return list;
+    }
+
+    public ArrayList<String> checkNumer(String number, String str) {
+        ArrayList<String> checkNumerList = new ArrayList<>();
+        ArrayList<String> resultList = new ArrayList<>();
+        checkNumerList = this.extractDate(str);
+        int flag = 0;
+
+
+        String sampleNum01 = "15881688";
+        String sampleNum02 = "15447758";
+        String sampleNum03 = "01041639299";
+
+        if (number.equals(sampleNum01)) {
+            flag = 0;
+        } else if (number.equals(sampleNum02)) {
+            flag = 1;
+        } else if (number.equals(sampleNum03)) {
+            flag = 2;
+        }
+
+        switch (flag) {
+            case 0:
+                resultList.add(checkNumerList.get(3)); //content
+                resultList.add(checkNumerList.get(1)); //date
+                break;
+            case 1:
+                resultList.add(checkNumerList.get(3) + " " + checkNumerList.get(6));
+                resultList.add(checkNumerList.get(1));
+                break;
+            case 2:
+                resultList.add(checkNumerList.get(0));
+                resultList.add(checkNumerList.get(1));
+                break;
+        }
+
+        return resultList;
     }
 }
