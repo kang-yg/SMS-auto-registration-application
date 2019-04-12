@@ -25,32 +25,13 @@ public class GroupAddActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groupadd);
 
-        inviteEdit = (EditText) findViewById(R.id.invite);
+        GroupAddSingleton groupAddSingleton = GroupAddSingleton.getInstance();
+        groupAddSingleton.title = (EditText)findViewById(R.id.groupadd_title);
+        groupAddSingleton.inviteEdit = (EditText)findViewById(R.id.invite);
+        groupAddSingleton.addGroup = (Button)findViewById(R.id.groupadd_complete);
+        groupAddSingleton.activity = this;
 
-        title = (EditText) findViewById(R.id.groupadd_title);
-
-        groupadd_complete = (Button) findViewById(R.id.groupadd_complete);
-        groupadd_complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                groupaddTitle = title.getText().toString();
-                groupaddTitle.trim();
-                group_getEdit = inviteEdit.getText().toString().split(",|/|\\s");
-                for (int i = 0; i < group_getEdit.length; i++) {
-                    group_getEdit[i].trim();
-                }
-                boolean check = checkUID(group_getEdit);
-                if (check) {
-                    ConnectFireBaseDB.postGroup(true, 10, strings, groupaddTitle);
-                    Toast.makeText(getApplicationContext(),"그룹캘린더 생성 완료",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "UID를 확인해주세요", Toast.LENGTH_LONG).show();
-                }
-
-                //Toast.makeText(getApplicationContext(),group_getEdit[0],Toast.LENGTH_SHORT).show();
-            }
-        });
+        ConnectFireBaseDB.UserRead();
 
         cancel = (Button) findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
@@ -61,29 +42,4 @@ public class GroupAddActivity extends Activity implements View.OnClickListener {
         finish();
     }
 
-    private boolean checkUID(String[] _getEdit) {
-        boolean flag = false;
-        strings.clear();
-        ConnectFireBaseDB.UserRead();
-        ArrayList<String> tempUID = new ArrayList<>();
-
-        for (int i = 0; i < MyApplication.firebaseDB_user.size(); i++) {
-            try {
-                tempUID.add(MyApplication.firebaseDB_user.get(i).getUserUID());
-                Log.d("tempUID", tempUID.get(i));
-            } catch (Exception e) {
-                Log.d("tempUID", "다시!");
-            }
-        }
-        for (int i = 0; i < tempUID.size(); i++) {
-            if (tempUID.contains(_getEdit[i])) {
-                strings.add(_getEdit[i]);
-                flag = true;
-            } else {
-                strings.clear();
-                Toast.makeText(getApplicationContext(), "UID를 확인해주세요", Toast.LENGTH_LONG).show();
-            }
-        }
-        return flag;
-    }
 }

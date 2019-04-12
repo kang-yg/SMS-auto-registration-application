@@ -8,6 +8,7 @@ import java.util.List;
 public class MyApplication extends Application {
     static List<FirebaseDB_User> firebaseDB_user = new ArrayList<FirebaseDB_User>();
     static List<FirebaseDB_Group> firebaseDB_groups = new ArrayList<FirebaseDB_Group>();
+    static List<DeviceEvent> deviceEvents = new ArrayList<DeviceEvent>();
 
     static String localUser_name;
     static String localUser_email;

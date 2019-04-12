@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,20 +59,41 @@ public class ConnectFireBaseDB {
 //                        Log.d("UserRead", "data[" + k + "]: " + data.get(k));
                     }
                 }
-/*                for(int i = 0 ; i < arrayList.size()/4 ; i++){
-                    MyApplication.setFirebaseDB_user(i,arrayList.get(i*4),arrayList.get(i*4+1),arrayList.get(i*4+2),arrayList.get(i*4+3));
-                }*/
 
-                for(int i = 0 ; i < arrayList.size()/4 ; i++){
+                for (int i = 0; i < arrayList.size() / 4; i++) {
                     MyApplication.firebaseDB_user.add(new FirebaseDB_User());
-                    MyApplication.firebaseDB_user.get(i).setProviderID(arrayList.get(i*4));
-                    MyApplication.firebaseDB_user.get(i).setUserUID(arrayList.get(i*4+1));
-                    MyApplication.firebaseDB_user.get(i).setGoogleID(arrayList.get(i*4+2));
-                    MyApplication.firebaseDB_user.get(i).setUserName(arrayList.get(i*4+3));
+                    MyApplication.firebaseDB_user.get(i).setProviderID(arrayList.get(i * 4));
+                    MyApplication.firebaseDB_user.get(i).setUserUID(arrayList.get(i * 4 + 1));
+                    MyApplication.firebaseDB_user.get(i).setGoogleID(arrayList.get(i * 4 + 2));
+                    MyApplication.firebaseDB_user.get(i).setUserName(arrayList.get(i * 4 + 3));
 
                     Log.d("UserRead", MyApplication.firebaseDB_user.get(i).getUserUID());
-
                 }
+
+                final GroupAddSingleton groupAddSingleton = GroupAddSingleton.getInstance();
+                groupAddSingleton.addGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("aaaaa", "clicked");
+                        String title = groupAddSingleton.title.getText().toString();
+                        String[] group_getEdit = groupAddSingleton.inviteEdit.getText().toString().split(",|/|\\s");
+                        for (int i = 0; i < group_getEdit.length; i++) {
+                            group_getEdit[i].trim();
+                        }
+                        Arrays.sort(group_getEdit);
+                        ArrayList<String> tempUID = new ArrayList<>();
+
+                        for(int i = 0 ; i < group_getEdit.length ; i++){
+                            for(int j = 0 ; j < MyApplication.firebaseDB_user.size() ; j++){
+                                if (group_getEdit[i].equals(MyApplication.firebaseDB_user.get(j).getUserUID())){
+                                    tempUID.add(group_getEdit[i]);
+                                }
+                            }
+                        }
+
+                        ConnectFireBaseDB.postGroup(true, 10, tempUID, title);
+                    }
+                });
 
 /*                firebaseDB_user.setProviderID(arrayList.get(0));
                 firebaseDB_user.setUserUID(arrayList.get(1));
@@ -137,19 +160,18 @@ public class ConnectFireBaseDB {
                     }
                     int groupNum = Integer.parseInt(String.valueOf(arrayList.get(p * 3 + 2)));
                     MyApplication.firebaseDB_groups.get(p).setGroupNumber(groupNum);
-
                 }
 
                 //Add GroupCalendar spinner
                 ArrayList<String> spinnerArrayList = new ArrayList<>();
 
                 Log.d("GroupRead", Integer.toString(MyApplication.firebaseDB_groups.size()));
-                for(int i = 0 ; i < MyApplication.firebaseDB_groups.size() ; i++){
+                for (int i = 0; i < MyApplication.firebaseDB_groups.size(); i++) {
                     spinnerArrayList.add(MyApplication.firebaseDB_groups.get(i).getGroupName());
                 }
                 final MainSingleton mainSingleton = MainSingleton.getInstance();
 
-                ArrayAdapter<String> adp = new ArrayAdapter<String> (mainSingleton.activity, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
+                ArrayAdapter<String> adp = new ArrayAdapter<String>(mainSingleton.activity, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
 
                 mainSingleton.spinner.setAdapter(adp);
 
