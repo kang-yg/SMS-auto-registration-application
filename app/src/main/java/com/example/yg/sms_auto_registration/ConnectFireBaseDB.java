@@ -298,15 +298,15 @@ public class ConnectFireBaseDB {
     /*---------------------------------------------------------------------------------------------------------------------*/
     //Revision history
 
-    public static void postRevision(Boolean _add, int _revisionNumber, int _revisionScheduleNumber, String _revisionDate, String _revisionContent, String _revisionUser) {
+    public static void postRevision(Boolean _add, int _revisionNumber, int _revisionGroupNumber, String _revisionDate, String _revisionContent, String _revisionUser) {
         myRef = FirebaseDatabase.getInstance().getReference();
         Map<String, Object> childUpdate = new HashMap<>();
         Map<String, Object> postValue = null;
         if (_add) {
-            FirebaseDB_RevisionHistory post = new FirebaseDB_RevisionHistory(_revisionNumber, _revisionScheduleNumber, _revisionDate, _revisionContent, _revisionUser);
+            FirebaseDB_RevisionHistory post = new FirebaseDB_RevisionHistory(_revisionNumber, _revisionGroupNumber, _revisionDate, _revisionContent, _revisionUser);
             postValue = post.toMap();
         }
-        childUpdate.put("/RevisionHistory/" + _revisionNumber, postValue);
+        childUpdate.put("/RevisionHistory/" + _revisionGroupNumber, postValue);
         myRef.updateChildren(childUpdate);
     }
 
@@ -333,7 +333,7 @@ public class ConnectFireBaseDB {
                 firebaseDB_revisionHistory.setRevisionNumber(revisionNumber);
 
                 int revisionScheduleNumber = Integer.parseInt(String.valueOf(arrayList.get(3)));
-                firebaseDB_revisionHistory.setRevisionScheduleNumber(revisionScheduleNumber);
+                firebaseDB_revisionHistory.setRevisionGroupNumber(revisionScheduleNumber);
 
                 firebaseDB_revisionHistory.setRevisionContent(arrayList.get(4));
             }
@@ -406,9 +406,6 @@ public class ConnectFireBaseDB {
         myRef.updateChildren(childUpdate);
     }
 
-    /*---------------------------------------------------------------------------------------------------------------------*/
-    //GroupUserList
-
     public static void ScheduleNumberRead() {
         myRef = FirebaseDatabase.getInstance().getReference();
 
@@ -432,6 +429,9 @@ public class ConnectFireBaseDB {
         Query query = FirebaseDatabase.getInstance().getReference().child("ScheduleNumber");
         query.addListenerForSingleValueEvent(valueEventListener);
     }
+
+    /*---------------------------------------------------------------------------------------------------------------------*/
+    //GroupUserList
 
     public static void getUserNameForUserList() {
         Log.d("UserRead", "start UserRead");

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="사용자 설정" android:layout="@layout/preference_category"/>
+    <PreferenceScreen android:title="SMS 일정 등록패턴"
+        android:summary="등록할 SMS 일정의 패턴을 설정합니다."
+        >
+        <PreferenceCategory android:title="SMS 패턴" android:layout="@layout/preference_category"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SMS_pattern_1"
+            android:title="SMS 패턴 1"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SMS_pattern_2"
+            android:title="SMS 패턴 2"/>
+    </PreferenceScreen>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="SMS_auto_enroll"
+        android:switchTextOff="SMS 일정 자동등록을 해제합니다."
+        android:switchTextOn="SMS 일정 자동등록을 설정합니다."
+        android:title="SMS 일정 자동등록"/>
+    <RingtonePreference
+        android:defaultValue="content://settings/system/notification_sound"
+        android:title="알림 설정"
+        android:key="sound"
+        android:showDefault="true"
+        android:showSilent="true"
+        android:ringtoneType="notification"/>
+    <PreferenceCategory android:title="기타" android:layout="@layout/preference_category"/>
+    <Preference
+        android:title="UID 복사"
+        android:key="copyUID"
+        android:summary="그룹캘린더 생성에 필요한 UID를 복사합니다."/>
+    <Preference
+        android:title="문의 보내기"
+        android:key="makeInquiry"
+        android:summary="문의를 보낼 개발자의 이메일을 복사합니다."/>
+    <Preference
+        android:title="공지사항"/>
+
+</PreferenceScreen>

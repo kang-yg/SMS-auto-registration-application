@@ -79,8 +79,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener //ê·
             @Override
             public void onClick(View v) {
                 ConnectFireBaseDB.GroupRead();
+                ConnectFireBaseDB.ScheduleNumberRead();
                 Intent intent = new Intent(getActivity(), AnniversaryAddActivity.class);
                 intent.putExtra("GroupNum", MyApplication.currentGroupNum);
+                intent.putExtra("ScheduleNumber", MyApplication.scheduleNumber);
                 startActivity(intent);
             }
         });
@@ -89,8 +91,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener //ê·
             @Override
             public void onClick(View v) {
                 ConnectFireBaseDB.GroupRead();
+                ConnectFireBaseDB.ScheduleNumberRead();
                 Intent intent = new Intent(getActivity(), TodoAddActivity.class);
                 intent.putExtra("GroupNum", MyApplication.currentGroupNum);
+                intent.putExtra("ScheduleNumber", MyApplication.scheduleNumber);
                 startActivity(intent);
             }
         });
@@ -99,8 +103,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener //ê·
             @Override
             public void onClick(View v) {
                 ConnectFireBaseDB.GroupRead();
+                ConnectFireBaseDB.ScheduleNumberRead();
                 Intent intent = new Intent(getActivity(), AddGroupSchedule.class);
                 intent.putExtra("GroupNum", MyApplication.currentGroupNum);
+                intent.putExtra("ScheduleNumber", MyApplication.scheduleNumber);
                 startActivity(intent);
             }
         });

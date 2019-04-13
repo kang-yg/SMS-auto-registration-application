@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.yg.sms_auto_registration">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.READ_CALENDAR"></uses-permission>
 
     <application
@@ -37,20 +37,20 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <activity android:name=".SettingActivity"/>
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".SmsActivity"/>
-        <activity android:name=".TodoActivity"/>
-        <activity android:name=".SchedulelistActivitiy"/>
-        <activity android:name=".AnniversarylistActivity"/>
-        <activity android:name=".AnniversaryAddActivity"/>
-        <activity android:name=".TodoAddActivity"/>
-        <activity android:name=".ScheduleAddActivity"/>
-        <activity android:name=".GroupAddActivity"/>
-        <activity android:name=".SettingPatternActivity"/>
-        <activity android:name=".GrouplistActivity"/>
-        <activity android:name=".ChangelistActivity"/>
-        <activity android:name=".AddGroupSchedule"/>
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".SmsActivity" />
+        <activity android:name=".TodoActivity" />
+        <activity android:name=".SchedulelistActivitiy" />
+        <activity android:name=".AnniversarylistActivity" />
+        <activity android:name=".AnniversaryAddActivity" />
+        <activity android:name=".TodoAddActivity" />
+        <activity android:name=".ScheduleAddActivity" />
+        <activity android:name=".GroupAddActivity" />
+        <activity android:name=".SettingPatternActivity" />
+        <activity android:name=".GrouplistActivity" />
+        <activity android:name=".ChangelistActivity" />
+        <activity android:name=".AddGroupSchedule" />
 
     </application>
 </manifest>

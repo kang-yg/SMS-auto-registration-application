@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class FirebaseDB_RevisionHistory {
     private int revisionNumber;
-    private int revisionScheduleNumber;
+    private int revisionGroupNumber;
     private String revisionDate;
     private String revisionContent;
     private String revisionUser;
 
-    public FirebaseDB_RevisionHistory(int revisionNumber, int revisionScheduleNumber, String revisiondate, String revisionContent, String revisionUser) {
+    public FirebaseDB_RevisionHistory(int revisionNumber, int revisionGroupNumber, String revisiondate, String revisionContent, String revisionUser) {
         this.revisionNumber = revisionNumber;
-        this.revisionScheduleNumber = revisionScheduleNumber;
+        this.revisionGroupNumber = revisionGroupNumber;
         this.revisionDate = revisiondate;
         this.revisionContent = revisionContent;
         this.revisionUser = revisionUser;
@@ -27,7 +27,7 @@ public class FirebaseDB_RevisionHistory {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("RevisionNumber", revisionNumber);
-        result.put("RevisionScheduleNumber", revisionScheduleNumber);
+        result.put("RevisionGroupNumber", revisionGroupNumber);
         result.put("RevisionDate", revisionDate);
         result.put("RevisionContent", revisionContent);
         result.put("RevisionUser", revisionUser);
@@ -43,13 +43,7 @@ public class FirebaseDB_RevisionHistory {
         this.revisionNumber = revisionNumber;
     }
 
-    public int getRevisionScheduleNumber() {
-        return revisionScheduleNumber;
-    }
 
-    public void setRevisionScheduleNumber(int revisionScheduleNumber) {
-        this.revisionScheduleNumber = revisionScheduleNumber;
-    }
 
     public String getRevisionDate() {
         return revisionDate;
@@ -73,5 +67,13 @@ public class FirebaseDB_RevisionHistory {
 
     public void setRevisionUser(String revisionUser) {
         this.revisionUser = revisionUser;
+    }
+
+    public int getRevisionGroupNumber() {
+        return revisionGroupNumber;
+    }
+
+    public void setRevisionGroupNumber(int revisionGroupNumber) {
+        this.revisionGroupNumber = revisionGroupNumber;
     }
 }

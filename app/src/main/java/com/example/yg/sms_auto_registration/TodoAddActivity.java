@@ -2,6 +2,7 @@ package com.example.yg.sms_auto_registration;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -17,6 +18,10 @@ public class TodoAddActivity extends Activity implements View.OnClickListener { 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doadd);
+
+        Intent intent = getIntent();
+        final int groupNum = intent.getExtras().getInt("GroupNum");
+        final int scheduleNum = intent.getExtras().getInt("ScheduleNumber");
 
         layoutDate = (Button)findViewById(R.id.datepick);
         layoutDate.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +45,8 @@ public class TodoAddActivity extends Activity implements View.OnClickListener { 
                 String title = layoutTitle.getText().toString();
                 String content = layoutContent.getText().toString();
                 String date = (String) layoutDate.getText();
-                ConnectFireBaseDB.postSchedule(true, 2, 3, 3, date, null, title, content, "영규", null, 4);
+                ConnectFireBaseDB.postSchedule(true, scheduleNum, groupNum, 3, date, null, title, content, "영규", null, 4);
+                ConnectFireBaseDB.postScheduleNumber(true,scheduleNum+1);
                 Toast.makeText(getApplicationContext(),"할일추가 완료", Toast.LENGTH_LONG).show();
             }
         });
