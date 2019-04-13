@@ -10,10 +10,13 @@ public class MyApplication extends Application {
     static List<FirebaseDB_Group> firebaseDB_groups = new ArrayList<FirebaseDB_Group>();
     static List<DeviceEvent> deviceEvents = new ArrayList<DeviceEvent>();
 
+    static int groupNumber;
+    static int scheduleNumber;
+
     static String localUser_name;
     static String localUser_email;
     static String localUser_uid;
     static String localUser_providerId;
 
-    static String myDate;
+    static int currentGroupNum;
 }

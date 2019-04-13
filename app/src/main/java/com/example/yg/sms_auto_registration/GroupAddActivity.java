@@ -14,11 +14,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GroupAddActivity extends Activity implements View.OnClickListener { //그룹캘린더 추가 액티비티
-    private Button cancel, groupadd_complete;
-    private EditText inviteEdit, title;
-    String groupaddTitle;
-    String[] group_getEdit;
-    ArrayList<String> strings = new ArrayList<>();
+    private Button cancel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

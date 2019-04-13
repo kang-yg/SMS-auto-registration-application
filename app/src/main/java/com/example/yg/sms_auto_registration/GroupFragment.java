@@ -1,7 +1,6 @@
 package com.example.yg.sms_auto_registration;
 
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,27 +19,25 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
     private Boolean isFabOpen = false; //플로팅 열려있는지 판단하는 플래그
 
 
-    public GroupFragment()
-    {
+    public GroupFragment() {
     }
+
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.caleandar_fragment_group, container, false);
 
         //초기 그룹캘린더 생성버튼
-        btn_create = (Button)layout.findViewById(R.id.btn_create);
+        btn_create = (Button) layout.findViewById(R.id.btn_create);
         //초기 그룹캘린더 생성버튼 클릭 리스너
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),GroupAddActivity.class);
+                Intent intent = new Intent(getActivity(), GroupAddActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +61,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
         fab5.setOnClickListener(new View.OnClickListener() {//그룹캘린더 수정내역 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ChangelistActivity.class);
+                Intent intent = new Intent(getActivity(), ChangelistActivity.class);
                 startActivity(intent);
             }
         });
@@ -72,7 +69,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
         fab4.setOnClickListener(new View.OnClickListener() {//그룹캘린더 참여자 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),GrouplistActivity.class);
+                ConnectFireBaseDB.GroupRead();
+                Intent intent = new Intent(getActivity(), GrouplistActivity.class);
                 startActivity(intent);
             }
         });
@@ -80,7 +78,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
         fab3.setOnClickListener(new View.OnClickListener() {//기념일 등록 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),AnniversaryAddActivity.class);
+                ConnectFireBaseDB.GroupRead();
+                Intent intent = new Intent(getActivity(), AnniversaryAddActivity.class);
+                intent.putExtra("GroupNum", MyApplication.currentGroupNum);
                 startActivity(intent);
             }
         });
@@ -88,7 +88,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
         fab2.setOnClickListener(new View.OnClickListener() { //할 일 등록 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),TodoAddActivity.class);
+                ConnectFireBaseDB.GroupRead();
+                Intent intent = new Intent(getActivity(), TodoAddActivity.class);
+                intent.putExtra("GroupNum", MyApplication.currentGroupNum);
                 startActivity(intent);
             }
         });
@@ -96,12 +98,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
         fab1.setOnClickListener(new View.OnClickListener() { //일정 등록 클릭 리스너
             @Override
             public void onClick(View v) {
-                Log.d("mina", "aaaa");
-                Intent intent = new Intent(getActivity(),AddGroupSchedule.class);
+                ConnectFireBaseDB.GroupRead();
+                Intent intent = new Intent(getActivity(), AddGroupSchedule.class);
+                intent.putExtra("GroupNum", MyApplication.currentGroupNum);
                 startActivity(intent);
             }
         });
-
 
 
         return layout;
@@ -126,6 +128,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener //�
                 break;
         }
     }
+
     public void anim() { // 플로팅 버튼 클릭시 호출되는 메소드
 
         if (isFabOpen) {

@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+
         //Get device calendar event
         AddDeviceEvent addDeviceEvent = new AddDeviceEvent();
         addDeviceEvent.setCalendar(getApplicationContext());

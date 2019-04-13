@@ -28,9 +28,12 @@ public class AddGroupSchedule extends Activity implements View.OnClickListener {
         setContentView(R.layout.scheadd);
         Log.d("mina", "aaaa");
 
+        //SMS
         //Intent intent = getIntent();
-
         //String autoTitle = intent.getExtras().getString("Title");
+
+        Intent intent = getIntent();
+        final int groupNum = intent.getExtras().getInt("GroupNum");
 
         editTitel = (EditText) findViewById(R.id.scheadd_title);
         editContent = (EditText) findViewById(R.id.edit_content);
@@ -74,7 +77,7 @@ public class AddGroupSchedule extends Activity implements View.OnClickListener {
                     place = editPlace.getText().toString();
                     String startStr = (String) start_date_pick.getText();
                     String endStar = (String) end_date_pick.getText();
-                    ConnectFireBaseDB.postSchedule(true, 1, 2, 3, startStr, endStar, title, content, "영규", place, 4);
+                    ConnectFireBaseDB.postSchedule(true, 1, groupNum, 3, startStr, endStar, title, content, "영규", place, 4);
                     Toast.makeText(getApplicationContext(),"일정추가 완료", Toast.LENGTH_LONG).show();
 
                 } catch (Exception E) {
