@@ -67,6 +67,8 @@ public class AddGroupSchedule extends Activity implements View.OnClickListener {
 
         complete = (Button) findViewById(R.id.scheadd_complete);
         complete.setOnClickListener(new View.OnClickListener() {
+            StringBuffer buffer01 = null;
+            StringBuffer buffer02 = null;
             String title, content, place;
 
             @Override
@@ -78,9 +80,45 @@ public class AddGroupSchedule extends Activity implements View.OnClickListener {
                     place = editPlace.getText().toString();
                     String startStr = (String) start_date_pick.getText();
                     String endStar = (String) end_date_pick.getText();
-                    ConnectFireBaseDB.postSchedule(true, scheduleNum, groupNum, 3, startStr, endStar, title, content, "영규", place, 4);
-                    ConnectFireBaseDB.postScheduleNumber(true,scheduleNum+1);
-                    Toast.makeText(getApplicationContext(),"일정추가 완료", Toast.LENGTH_LONG).show();
+
+                    String arrText1[] = startStr.split("-");
+                    startStr = "";
+                    String arrText2[] = endStar.split("-");
+                    endStar = "";
+
+                    for(int i = 0 ; i < arrText1.length ; i++) {
+                        startStr += arrText1[i];
+                        endStar += arrText2[i];
+                    }
+
+                    int tempText1 = Integer.parseInt(startStr);
+                    int tempText2 = Integer.parseInt(endStar);
+
+                    if(tempText1 < tempText2 || tempText1 == tempText2) {
+                        System.out.println("tempText1 > tempText2 : " + tempText1 + " > " + tempText2 );
+                        buffer01 = new StringBuffer(Integer.toString(tempText1));
+                        buffer01.insert(4, "-");
+                        buffer01.insert(7, "-");
+                        buffer02 = new StringBuffer(Integer.toString(tempText2));
+                        buffer02.insert(4, "-");
+                        buffer02.insert(7, "-");
+                        ConnectFireBaseDB.postSchedule(true, scheduleNum, groupNum, 3, buffer01.toString(), buffer02.toString(), title, content, "영규", place, 4);
+                        ConnectFireBaseDB.postScheduleNumber(true,scheduleNum+1);
+                        Toast.makeText(getApplicationContext(),"일정추가 완료", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        System.out.println("tempText1 < tempText2 : " + tempText1 + " < " + tempText2 );
+                        buffer01 = new StringBuffer(Integer.toString(tempText1));
+                        buffer01.insert(4, "-");
+                        buffer01.insert(7, "-");
+
+                        end_date_pick.setText(buffer01.toString());
+                        Toast.makeText(getApplicationContext(),"시작일 종료일 확인", Toast.LENGTH_LONG).show();
+                    }
+
+//                    ConnectFireBaseDB.postSchedule(true, scheduleNum, groupNum, 3, startStr, endStar, title, content, "영규", place, 4);
+//                    ConnectFireBaseDB.postScheduleNumber(true,scheduleNum+1);
+//                    Toast.makeText(getApplicationContext(),"일정추가 완료", Toast.LENGTH_LONG).show();
 
                 } catch (Exception E) {
                     E.printStackTrace();
