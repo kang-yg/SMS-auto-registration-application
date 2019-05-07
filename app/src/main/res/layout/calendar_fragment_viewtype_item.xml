@@ -12,13 +12,15 @@
         android:textSize="25dp"
         android:textColor="@color/black"
         android:textStyle="bold"/>
-    <TextView
-        android:id="@+id/todo_list"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_inner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/txt_Viewweek"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:layout_margin="5dp"/>
+        />
+
+
+
 
 </RelativeLayout>

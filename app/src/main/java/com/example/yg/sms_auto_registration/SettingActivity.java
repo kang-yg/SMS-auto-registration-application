@@ -6,10 +6,12 @@ import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -32,11 +34,27 @@ public class SettingActivity extends Activity { //설정창 액티비티
     public static class SettingsScreen extends PreferenceFragment {
         Preference copyUID;
         Preference makeInquiry;
+        SwitchPreference pattern01;
+        SwitchPreference pattern02;
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preference);
+
+
+            pattern01 = (SwitchPreference)findPreference("SMS_pattern_1");
+            pattern01.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if(pattern01.isChecked()){
+                        Toast.makeText(getContext(),"patterm01 clicked", Toast.LENGTH_SHORT).show();
+                    }
+
+                    return false;
+                }
+            });
+
             copyUID = (Preference) findPreference("copyUID");
             copyUID.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -54,9 +72,9 @@ public class SettingActivity extends Activity { //설정창 액티비티
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(getContext().CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("Administrator e-mail", "aaa@naver.com");
+                    ClipData clipData = ClipData.newPlainText("Administrator e-mail", "kinnylovemy@naver.com");
                     clipboardManager.setPrimaryClip(clipData);
-                    Toast.makeText(getContext(), "문의하실 메일주소가 클립보드에 복사되었습니다." + "\n보내실 주소 : " + "aaa@naver.com", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "문의하실 메일주소가 클립보드에 복사되었습니다." + "\n보내실 주소 : " + "kinnylovemy@naver.com", Toast.LENGTH_LONG).show();
                     return false;
                 }
             });

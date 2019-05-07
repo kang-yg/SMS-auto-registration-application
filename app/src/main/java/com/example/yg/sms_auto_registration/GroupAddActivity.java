@@ -14,13 +14,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GroupAddActivity extends Activity implements View.OnClickListener { //그룹캘린더 추가 액티비티
-    private Button cancel;
+    private Button cancel,confirm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groupadd);
-
         GroupAddSingleton groupAddSingleton = GroupAddSingleton.getInstance();
         groupAddSingleton.title = (EditText)findViewById(R.id.groupadd_title);
         groupAddSingleton.inviteEdit = (EditText)findViewById(R.id.invite);
@@ -28,9 +27,9 @@ public class GroupAddActivity extends Activity implements View.OnClickListener {
         groupAddSingleton.activity = this;
 
         ConnectFireBaseDB.UserRead();
-
-        cancel = (Button) findViewById(R.id.cancel);
+                cancel = (Button) findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
+
     }
 
     @Override
@@ -38,4 +37,7 @@ public class GroupAddActivity extends Activity implements View.OnClickListener {
         finish();
     }
 
+    public void backWard(View view) {
+        finish();
+    }
 }

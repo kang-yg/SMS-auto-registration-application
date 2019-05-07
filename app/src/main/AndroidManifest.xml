@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.READ_CALENDAR"></uses-permission>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:name=".MyApplication"
@@ -12,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,20 +39,31 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".SmsActivity" />
-        <activity android:name=".TodoActivity" />
-        <activity android:name=".SchedulelistActivitiy" />
-        <activity android:name=".AnniversarylistActivity" />
-        <activity android:name=".AnniversaryAddActivity" />
-        <activity android:name=".TodoAddActivity" />
-        <activity android:name=".ScheduleAddActivity" />
-        <activity android:name=".GroupAddActivity" />
-        <activity android:name=".SettingPatternActivity" />
-        <activity android:name=".GrouplistActivity" />
-        <activity android:name=".ChangelistActivity" />
-        <activity android:name=".AddGroupSchedule" />
+        <receiver android:name=".AlarmReceiver" android:exported="true">
+        </receiver>
+        <service android:name=".AlarmVibrate"/>
+
+        <activity android:name=".SettingActivity"
+            android:theme="@style/SettingsTheme"/>
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".SmsActivity"/>
+        <activity android:name=".TodoActivity"/>
+        <activity android:name=".SchedulelistActivitiy"/>
+        <activity android:name=".AnniversarylistActivity"/>
+        <activity android:name=".AnniversaryAddActivity"/>
+        <activity android:name=".Group_TodoAddActivity"/>
+        <activity android:name=".ScheduleAddActivity"/>
+        <activity android:name=".GroupAddActivity"/>
+        <activity android:name=".SettingPatternActivity"/>
+        <activity android:name=".GrouplistActivity"/>
+        <activity android:name=".ChangelistActivity"/>
+        <activity android:name=".AddGroupSchedule"/>
+        <activity android:name=".TodoAddActivity"/>
+        <activity android:name=".TodoListActivity"/>
+        <activity android:name=".AnniverAddActivity"/>
+        <activity android:name=".AnniverListActivity"/>
+        <activity android:name=".AlarmLayout"/>
+        <activity android:name=".EnrollListActivity"/>
 
     </application>
 </manifest>

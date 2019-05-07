@@ -3,6 +3,7 @@ package com.example.yg.sms_auto_registration;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.util.Log;
 import android.widget.TimePicker;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         // Get a Calendar instance
@@ -57,6 +59,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         Button tv = (Button) getActivity().findViewById(R.id.start_time);
         // Display the 12 hour format time in app interface
         tv.setText(status+" "+hour_of_12_hour_format + " : " + String.format("%02d",minute));
+        MyApplication.timeForAlarm = Integer.toString(hourOfDay) + ":" + String.format("%02d",minute);
     }
-
 }
+

@@ -14,11 +14,11 @@
         android:background="@drawable/bottom_edge">
 
         <Button
+            android:onClick="backWard"
             android:layout_width="40dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_arrow_back_black_24dp"
-            android:onClick="backWard"/>
+            android:background="@drawable/ic_arrow_back_black_24dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,11 +34,11 @@
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/sche_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/sche_top"
-        android:background="@color/gray" />
+        android:background="@color/white" />
 
 
     <android.support.design.widget.FloatingActionButton

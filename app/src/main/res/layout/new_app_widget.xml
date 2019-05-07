@@ -12,15 +12,48 @@
         android:background="@drawable/widgettop"
         android:contentDescription="@string/appwidget_text"
         android:gravity="center"
-        android:text="2019-1-10"
         android:textColor="@color/black"
         android:textSize="30sp"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:background="@color/lightgray"
         android:layout_below="@+id/appwidget_text"
         android:layout_centerHorizontal="true"
-        android:background="@color/gray" />
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"/>
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"/>
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>

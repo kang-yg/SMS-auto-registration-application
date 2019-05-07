@@ -19,7 +19,7 @@
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_arrow_back_black_24dp"
-            android:onClick="backWard"/>
+            android:onClick="personal_backWard"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -167,50 +167,23 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
-        <Button
-            android:id="@+id/alram_one"
-            android:layout_width="70dp"
+        <Spinner
+            android:id="@+id/alram_spinner"
+            android:layout_width="110dp"
             android:layout_height="30dp"
             android:layout_alignTop="@+id/alram"
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/alram"
-            android:background="@drawable/all_round"
-            android:text="@string/am"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-        <Button
-            android:id="@+id/alram_two"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_alignTop="@+id/alram_one"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/alram_one"
-            android:background="@drawable/all_round"
-            android:text="@string/pm"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-        <Button
-            android:id="@+id/alram_three"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_alignTop="@+id/alram_two"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/alram_two"
-            android:background="@drawable/all_round"
-            android:text="@string/yester"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-        <Button
-            android:id="@+id/alram_four"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_alignTop="@+id/alram_three"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/alram_three"
-            android:background="@drawable/all_round"
-            android:text="@string/weekago"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:background="@android:color/transparent"
+            android:entries="@array/alramspinner_sche"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/alram"
+            android:layout_toEndOf="@+id/alram_spinner"
+            android:background="@drawable/alram_icon" />
 
 
         <TextView

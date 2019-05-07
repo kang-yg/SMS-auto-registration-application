@@ -13,4 +13,8 @@
     <color name="lightgray">#FFD3D3D3</color>
     <color name="green">#FF32CD32</color>
     <color name="blue">#FF000080</color>
+    <color name="orangered">#FFFF4500</color>
+    <color name="cyan">#FF00FFFF</color>
+
+
 </resources>

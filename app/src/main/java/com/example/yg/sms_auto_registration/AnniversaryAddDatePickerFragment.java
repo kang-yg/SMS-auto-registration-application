@@ -34,5 +34,6 @@ public class AnniversaryAddDatePickerFragment extends DialogFragment implements 
 
         Button button = (Button)getActivity().findViewById(R.id.datepick);
         button.setText(formatted);
+        MyApplication.dateForAlarm = formatted;
     }
 }

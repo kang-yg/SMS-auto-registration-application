@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,10 @@ import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
-import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,24 +31,28 @@ import java.util.Date;
 
 public class PersonalFragment extends Fragment implements OnDateSelectedListener, OnMonthChangedListener, View.OnClickListener//개인 캘린더 생성 및 표시 클래스
 {
-    public static ArrayList<String> todo_list;
-    public static ArrayList<Calendar> week_list;
+    public static ArrayList<SearchData> todo_list = new ArrayList<>();
+    public static ArrayList<Personal_todosliding> todo_arr = new ArrayList<>();
     RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
+    public static RecyclerView.LayoutManager mLayoutManager;
     private TextView slide_text;//오늘날짜 클릭시 올라오는 레이아웃에 표시되는 텍스트뷰
-    private RelativeLayout relativeLayout;//프래그먼트 표시 할 레이아웃
+    public static RelativeLayout relativeLayout;//프래그먼트 표시 할 레이아웃
     private Animation slide_up, slide_down;//오늘날짜 클릭시 올라오고 내려오는 애니메이션
     private FloatingActionButton fab, fab1, fab2, fab3;//플로팅 버튼
     private Boolean isFabOpen = false; //플로팅 열려있는지 판단하는 플래그
     protected static Animation fab_open;
     protected static Animation fab_close;//플로팅 버튼 열고닫기 애니메이션
-
+    Personal_SlidingTodayAdapter adapter;
+    public static LocalDB dbs;
     public static Date todayDate;
     private int dayNum,day,year,month;//요일,일,년,월 변수
     private Date selectedDate = null;
     private Date date1;//날짜 변수
     private Calendar cal;//캘린더 변수
-    static MaterialCalendarView materialCalendarView;//캘린더 변수
+    public static MaterialCalendarView materialCalendarView;//캘린더 변수
+    public static int[] color_group;
+    DayViewDecorator event;
+
 
 
 
@@ -103,7 +108,7 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
         fab3.setOnClickListener(new View.OnClickListener() {//기념일 등록 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),AnniversaryAddActivity.class);
+                Intent intent = new Intent(getActivity(),AnniverAddActivity.class);
                 startActivity(intent);
             }
         });
@@ -111,7 +116,7 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
         fab2.setOnClickListener(new View.OnClickListener() { //할 일 등록 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),TodoAddActivity.class);
+                Intent intent = new Intent(getActivity(), TodoAddActivity.class);
                 startActivity(intent);
             }
         });
@@ -146,11 +151,28 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
         mRecyclerView  = (RecyclerView) layout.findViewById(R.id.slide_recycler);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        todo_list = new ArrayList<>();
-        todo_list.add("화장실가기");
 
 
 
+
+        dbs=new LocalDB(getContext());
+        todo_list = dbs.personal_slidingtoday();
+        color_group = new int[1];
+        PersonalFragment.materialCalendarView.removeDecorators();
+        PersonalFragment.materialCalendarView.addDecorator(new SaturdayDecorator());
+        PersonalFragment.materialCalendarView.addDecorator(new SundayDecorator());
+        PersonalFragment.materialCalendarView.addDecorator(new OndateDecorator());
+        PersonalFragment.todo_list = PersonalFragment.dbs.personal_slidingtoday();
+
+        for(int i=0;i<PersonalFragment.todo_list.size();i++){
+            String[] year_arr = PersonalFragment.todo_list.get(i).getSearchlist_year().split("년");
+            String[] month_arr = year_arr[1].split("월");
+            String[] day_arr = month_arr[1].split("일");
+
+            PersonalFragment.color_group = new int[1];
+            DayViewDecorator eventDecorator=new EventDecorator(PersonalFragment.color_group,Integer.parseInt(year_arr[0]),Integer.parseInt(month_arr[0]),Integer.parseInt(day_arr[0]),2);
+            PersonalFragment.materialCalendarView.addDecorator(eventDecorator);
+        }
 
 
         return layout;
@@ -161,8 +183,61 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) { //달력의 Day 선택 시 동작
 
-        SlidingTodayAdapter myAdapter = new SlidingTodayAdapter(todo_list);
-        mRecyclerView.setAdapter(myAdapter);
+        todo_list = dbs.personal_slidingtoday();
+        adapter = null;
+        int color=0;
+        todo_arr.clear();
+        for (int i=0;i<todo_list.size();i++){
+            Log.d("각",todo_list.get(i).getSearchlist_year());
+            String[] year_arr = todo_list.get(i).getSearchlist_year().split("년");
+            String[] month_arr = year_arr[1].split("월");
+            String[] day_arr = month_arr[1].split("일");
+            Log.d("긁",todo_list.get(i).getRepeat_num()+"");
+            if(todo_list.get(i).getRepeat_num()==2) {
+                if ( String.format("%02d", date.getMonth() + 1).equals(month_arr[0]) && String.valueOf(date.getDay()).equals(day_arr[0])) {
+                    if (todo_list.get(i).getDivision() == 1) {
+                        color = getResources().getColor(R.color.black);
+                    }
+                    if (todo_list.get(i).getDivision() == 2) {
+                        color = getResources().getColor(R.color.orangered);
+                    }
+                    if (todo_list.get(i).getDivision() == 3) {
+                        color = getResources().getColor(R.color.cyan);
+                    }
+                    todo_arr.add(new Personal_todosliding(todo_list.get(i).getSearchlist_title(), color));
+                    adapter = new Personal_SlidingTodayAdapter(todo_arr,getContext());
+                }
+            }else if(todo_list.get(i).getRepeat_num()==1) {
+                if ( String.valueOf(date.getYear()).equals(year_arr[0]) && String.valueOf(date.getDay()).equals(day_arr[0])) {
+                    if (todo_list.get(i).getDivision() == 1) {
+                        color = getResources().getColor(R.color.black);
+                    }
+                    if (todo_list.get(i).getDivision() == 2) {
+                        color = getResources().getColor(R.color.orangered);
+                    }
+                    if (todo_list.get(i).getDivision() == 3) {
+                        color = getResources().getColor(R.color.cyan);
+                    }
+                    todo_arr.add(new Personal_todosliding(todo_list.get(i).getSearchlist_title(), color));
+                    adapter = new Personal_SlidingTodayAdapter(todo_arr,getContext());
+                }
+            }else{
+                if ( String.valueOf(date.getYear()).equals(year_arr[0]) &&String.format("%02d", date.getMonth() + 1).equals(month_arr[0]) &&String.valueOf(date.getDay()).equals(day_arr[0])) {
+                    if (todo_list.get(i).getDivision() == 1) {
+                        color = getResources().getColor(R.color.black);
+                    }
+                    if (todo_list.get(i).getDivision() == 2) {
+                        color = getResources().getColor(R.color.orangered);
+                    }
+                    if (todo_list.get(i).getDivision() == 3) {
+                        color = getResources().getColor(R.color.cyan);
+                    }
+                    todo_arr.add(new Personal_todosliding(todo_list.get(i).getSearchlist_title(), color));
+                    adapter = new Personal_SlidingTodayAdapter(todo_arr,getContext());
+                }
+            }
+        }
+        mRecyclerView.setAdapter(adapter);
 
 
 
@@ -172,10 +247,10 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
         cal.setTime(date1);//캘린더 날짜 설정
 
         /**날찌밑에 점찍기
-        //int[] color = new int[2];
-        //color[0]=Color.RED;
+         //int[] color = new int[2];
+         //color[0]=Color.RED;
 
-        //materialCalendarView.addDecorator(new EventDecorator(color,date.getDate()));*/
+         //materialCalendarView.addDecorator(new EventDecorator(color,date.getDate()));*/
 
 
         dayNum=cal.get(Calendar.DAY_OF_WEEK);//요일 얻기
@@ -215,6 +290,20 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
         year = date.getYear();
         month = date.getMonth();
         todayDate = date.getDate();
+        materialCalendarView.removeDecorator(event);
+        for(int k=0;k<todo_list.size();k++){
+            String[] year_arr = todo_list.get(k).getSearchlist_year().split("년");
+            String[] month_arr = year_arr[1].split("월");
+            String[] day_arr = month_arr[1].split("일");
+            if (todo_list.get(k).getRepeat_num()==1&& date.getMonth()+1>=Integer.parseInt(month_arr[0])){
+                event=new EventDecorator(color_group,Integer.parseInt(year_arr[0]),date.getMonth()+1,Integer.parseInt(day_arr[0]),2);
+                materialCalendarView.addDecorator(event);
+            }
+            if (todo_list.get(k).getRepeat_num()==2&& date.getYear()>=Integer.parseInt(year_arr[0])){
+                event=new EventDecorator(color_group,date.getYear(),Integer.parseInt(month_arr[0]),Integer.parseInt(day_arr[0]),2);
+                materialCalendarView.addDecorator(event);
+            }
+        }
 
         month+=1;//월이 0부터 카운트되므로 +1 필수
         ((MainActivity)getActivity()).ChangeTopbar(year+"년"+month+"월");//메인 액티비티의 ChangeTopbar메소드 호출
@@ -224,19 +313,19 @@ public class PersonalFragment extends Fragment implements OnDateSelectedListener
     public void selectAnim(Date date) { //오늘날짜 클릭 여부 판단 후 슬라이드올라오고 내려가게 하는 메소드
 
 
-            if (selectedDate == date) {
-                relativeLayout.startAnimation(slide_down);
-                relativeLayout.setVisibility(View.GONE);
-                relativeLayout.setClickable(false);
-                materialCalendarView.setTileHeight(300);
-                selectedDate = null;
-            } else {
-                relativeLayout.setVisibility(View.VISIBLE);
-                relativeLayout.startAnimation(slide_up);
-                materialCalendarView.setTileHeight(175);
-                relativeLayout.setClickable(true);
-                selectedDate = date;
-            }
+        if (selectedDate == date) {
+            relativeLayout.startAnimation(slide_down);
+            relativeLayout.setVisibility(View.GONE);
+            relativeLayout.setClickable(false);
+            materialCalendarView.setTileHeight(240);
+            selectedDate = null;
+        } else {
+            relativeLayout.setVisibility(View.VISIBLE);
+            relativeLayout.startAnimation(slide_up);
+            materialCalendarView.setTileHeight(160);
+            relativeLayout.setClickable(true);
+            selectedDate = date;
+        }
     }
 
     public void anim() { // 플로팅 버튼 클릭시 호출되는 메소드

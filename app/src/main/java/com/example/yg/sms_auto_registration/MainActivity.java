@@ -2,6 +2,7 @@
 package com.example.yg.sms_auto_registration;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,28 +17,43 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static ArrayList<Personal_todosliding> todo_arr = new ArrayList<>();
 
     private ViewPager vp; //프래그먼트 표시 뷰 페이저
     private Button viewtype_btn, personal_btn, group_btn, today_btn;//보기방식, 개인캘린더, 그룹캘린더 버튼
     private Spinner spinner;//그룹캘린더 스피너
-    private TextView topbar, viewtype_txt, today_txt;//캘린더 년월 표시 텍스트뷰
+    private TextView user_id, viewtype_txt, today_txt;//캘린더 년월 표시 텍스트뷰
     PersonalFragment personalFragment = null;
+    public static TextView topbar;
+    private ImageView user_img;
+    public static String g_btn;
+    private LocalDB database;
 
+    public static MainSingleton mainSingleton = MainSingleton.getInstance();
     String providerId;
     String uid;
     String name;
     String email;
     Uri photoUrl;
 
+    public static int is_group=0,is_personal=0;
+    public static ArrayList<SearchData> todo_list = new ArrayList<>();
+    static DayViewDecorator eventDecorator ;
+    private int list_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +118,14 @@ public class MainActivity extends AppCompatActivity {
         //오늘보기 텍스트 객체
         today_txt = (TextView) findViewById(R.id.txt_Today);
 
+        //사용자 아이디 ,프로필 설정정
+        user_id = (TextView) findViewById(R.id.txt_UserId);
+        user_img = (ImageView) findViewById(R.id.img_UserImage);
+        user_id.setText(name);
+        Picasso.with(getApplicationContext())
+                .load(photoUrl).transform(new CircleTransform())
+                .into(user_img);
+
         // 전체화면인 DrawerLayout 객체 참조
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
@@ -121,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MainSingleton mainSingleton = MainSingleton.getInstance();
+
         // 스피너 어뎁터 및 레이아웃 부착
         group_btn = (Button) findViewById(R.id.Group_btn);
         mainSingleton.group_btn = (Button) findViewById(R.id.Group_btn);
@@ -143,14 +167,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 personalFragment.SetToday();
+                GroupFragment.SetToday();
+                //ViewtypeFragment.mRecyclerView.scrollToPosition(ViewtypeFragment.item_position);
             }
         });
         today_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 personalFragment.SetToday();
+                GroupFragment.SetToday();
+                //ViewtypeFragment.mRecyclerView.scrollToPosition(ViewtypeFragment.item_position);
+
             }
         });
+
 
         //개인, 그룹캘린더 버튼 클릭리스너
 
@@ -164,25 +194,95 @@ public class MainActivity extends AppCompatActivity {
         viewtype_txt.setTag(2);
 
 
+
     }
 
 
     //버튼 클릭 리스너
     View.OnClickListener movePageListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
 
             int tag = (int) v.getTag();
             vp.setCurrentItem(tag);
             if (tag == 0) {//개인 캘린더 버튼 클릭 시 버튼색상 변경
+                PersonalFragment.SetToday();
                 personal_btn.setBackgroundResource(R.color.skyblue);
-                group_btn.setBackgroundResource(R.color.lightgray);
-                spinner.setBackgroundResource(R.color.lightgray);
+                mainSingleton.group_btn.setBackgroundResource(R.color.lightgray);
+                mainSingleton.spinner.setBackgroundResource(R.color.lightgray);
+                PersonalFragment.materialCalendarView.removeDecorators();
+                PersonalFragment.materialCalendarView.addDecorator(new SaturdayDecorator());
+                PersonalFragment.materialCalendarView.addDecorator(new SundayDecorator());
+                PersonalFragment.materialCalendarView.addDecorator(new OndateDecorator());
+
+                PersonalFragment.todo_list = PersonalFragment.dbs.personal_slidingtoday();
+
+                for(int i=0;i<PersonalFragment.todo_list.size();i++){
+                    String[] year_arr = PersonalFragment.todo_list.get(i).getSearchlist_year().split("년");
+                    String[] month_arr = year_arr[1].split("월");
+                    String[] day_arr = month_arr[1].split("일");
+
+                    PersonalFragment.color_group = new int[1];
+                    eventDecorator=new EventDecorator(PersonalFragment.color_group,Integer.parseInt(year_arr[0]),Integer.parseInt(month_arr[0]),Integer.parseInt(day_arr[0]),2);
+                    PersonalFragment.materialCalendarView.addDecorator(eventDecorator);
+                }
+
             } else if (tag == 1) {//그룹 캘린더 버튼 클릭 시 버튼색상 변경
+                GroupFragment.SetToday();
                 personal_btn.setBackgroundResource(R.color.lightgray);
-                group_btn.setBackgroundResource(R.color.skyblue);
-                //spinner.setBackgroundResource(R.color.skyblue);
+                mainSingleton.group_btn.setBackgroundResource(R.color.skyblue);
+                mainSingleton.spinner.setBackgroundResource(R.color.skyblue);
+                if(mainSingleton.group_btn.getText().equals("+")){
+                    Intent intent = new Intent(getApplicationContext(),GroupAddActivity.class);
+                    startActivity(intent);
+                }
+               // GroupFragment.myRef2.addChildEventListener(GroupFragment.scheduleEventListener);
+                GroupFragment.set_materialCalendarView.removeDecorators();
+                GroupFragment.set_materialCalendarView.addDecorator(new SaturdayDecorator());
+                GroupFragment.set_materialCalendarView.addDecorator(new SundayDecorator());
+                GroupFragment.set_materialCalendarView.addDecorator(new OndateDecorator());
+
+
+
+                for (int i=0;i<GroupFragment.materialCalendarView_group.size();i++) {
+                    if(mainSingleton.group_btn.getText().toString().equals(GroupFragment.materialCalendarView_group.get(i).GroupName)) {
+                        for(int j=0;j<GroupFragment.schedule_date.size();j++) {
+                            if(GroupFragment.materialCalendarView_group.get(i).num.equals(GroupFragment.schedule_date.get(j).group_num)) {
+                                GroupFragment.color_group = new int[1];
+                                eventDecorator=new EventDecorator(GroupFragment.color_group,GroupFragment.schedule_date.get(j).year,GroupFragment.schedule_date.get(j).month,GroupFragment.schedule_date.get(j).day,1);
+                                GroupFragment.set_materialCalendarView.addDecorator(eventDecorator);
+                                //Log.d("굳",GroupFragment.schedule_date.get(j).year+"-"+GroupFragment.schedule_date.get(j).month+"-"+GroupFragment.schedule_date.get(j).day+""+GroupFragment.schedule_date.get(j).group_num+""+GroupFragment.schedule_date.get(j).sche_title);
+                            }
+                        }
+                    }
+                }
+
+            }else if (tag ==2 ) {
+                //주단위 보기방식 리사이클러뷰 오늘날짜로 이동
+                int color =0;
+                todo_arr.clear();
+                ViewtypeFragment.mRecyclerView.scrollToPosition(ViewtypeFragment.item_position);
+                topbar.setText("주 단위 보기");
+                for(int i=0;i<PersonalFragment.todo_list.size();i++){
+                    String[] year_arr = PersonalFragment.todo_list.get(i).getSearchlist_year().split("년");
+                    String[] month_arr = year_arr[1].split("월");
+                    String[] day_arr = month_arr[1].split("일");
+                    if(PersonalFragment.todo_list.get(i).getDivision()==1){
+                        color=getResources().getColor(R.color.black);
+                    }
+                    if(PersonalFragment.todo_list.get(i).getDivision()==2){
+                        color=getResources().getColor(R.color.orangered);
+                    }if(PersonalFragment.todo_list.get(i).getDivision()==3){
+                        color=getResources().getColor(R.color.cyan);
+                    }
+                    todo_arr.add(new Personal_todosliding(PersonalFragment.todo_list.get(i).getSearchlist_title(),color,year_arr[0],month_arr[0],day_arr[0]));
+
+                }
+                WeekviewAdapter myAdapter = new WeekviewAdapter(ViewtypeFragment.week_list,ViewtypeFragment.dayNum_list,ViewtypeFragment.view_context,todo_arr);//어댑터 객체
+                ViewtypeFragment.mRecyclerView.setAdapter(myAdapter);//어댑터 부착
             }
+
         }
     };
 
@@ -192,18 +292,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     public void openSearch(View view) {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
     public void openEnrolledlist(View view) {
-        Intent intent = new Intent(this, SmsActivity.class);
+        Intent intent = new Intent(this, EnrollListActivity.class);
         startActivity(intent);
     }
 
     public void openTodolist(View view) {
-        Intent intent = new Intent(this, TodoActivity.class);
+        Intent intent = new Intent(this, TodoListActivity.class);
         startActivity(intent);
     }
 
@@ -213,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openAnniversarylist(View view) {
-        Intent intent = new Intent(this, AnniversarylistActivity.class);
+        Intent intent = new Intent(this, AnniverListActivity.class);
         startActivity(intent);
     }
 
@@ -246,7 +347,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void ChangeTopbar(String text) { //캘린더의 topbar 변경 메소드
+    public static void ChangeTopbar(String text) { //캘린더의 topbar 변경 메소드
         topbar.setText(text);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

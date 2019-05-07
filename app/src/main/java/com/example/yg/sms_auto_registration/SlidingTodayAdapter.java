@@ -1,32 +1,156 @@
 package com.example.yg.sms_auto_registration;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class SlidingTodayAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private ArrayList<String> todo_list;
+    private ArrayList<Today_text> todo_list;
+    private Context context;
+    private int color;
+    DatabaseReference myRef;
+    ChildEventListener childEventListener;
+    public String remove_num;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView todo_month;
+        //CheckBox checkBox;
+//        String remove_num;
 
+        Integer scheduleNum;
         ViewHolder(View itemView) {
             super(itemView) ;
 
-
+            final int[] color = {0};
                 todo_month = itemView.findViewById(R.id.txt_example);
+//                checkBox = itemView.findViewById(R.id.check_example);
+//                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                        if(isChecked == true){
+//                            todo_month.setPaintFlags(todo_month.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+//                            color[0] =todo_month.getCurrentTextColor();
+//                            todo_month.setTextColor(Color.BLACK);
+//                        }else {
+//                            todo_month.setPaintFlags(0);
+//                            todo_month.setTextColor(color[0]);
+//                        }
+//                    }
+//                });
+
+            DatabaseReference myRef1= FirebaseDatabase.getInstance().getReference().child("ScheduleNumber");
+            ChildEventListener childEventListener1 = new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    scheduleNum = (int) (long) dataSnapshot.getValue();
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            myRef1.addChildEventListener(childEventListener1);
+
+            todo_month.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    for(int i=0;i<todo_list.size();i++) {
+                        if (todo_month.getText().equals(todo_list.get(i).todo)){
+                            remove_num=String.valueOf(todo_list.get(i).sche_num);
+                            show(i,todo_month);
+//                            myRef.addChildEventListener(childEventListener);
+//                            Toast.makeText(context, todo_list.get(i).todo+" (이)가 삭제되었습니다.", Toast.LENGTH_LONG).show();
+//                            todo_month.setPaintFlags(todo_month.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+//                            todo_month.setTextColor(Color.BLACK);
+                        }
+                    }
+                    return false;
+                }
+            });
+
+
+             myRef= FirebaseDatabase.getInstance().getReference().child("GroupSchedule");
+             childEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if (dataSnapshot.getKey().equals(remove_num)) {
+                           ConnectFireBaseDB.postSchedule(false,Integer.parseInt(remove_num),0,0,null,null,null,null,null,null,0);
+                        }
+//
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+
+
+
+
+
 
         }
     }
 
-    SlidingTodayAdapter(ArrayList<String> todo_list)
+    SlidingTodayAdapter(ArrayList<Today_text> todo_list,Context context)
     {
         this.todo_list = todo_list;
+        this.context=context;
     }
 
     @NonNull
@@ -42,12 +166,38 @@ public class SlidingTodayAdapter  extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder myViewHolder = (ViewHolder)holder;
-        myViewHolder.todo_month.setText(todo_list.get(position));
-
+        myViewHolder.todo_month.setText(todo_list.get(position).todo);
+        myViewHolder.todo_month.setTextColor(todo_list.get(position).color);
     }
 
     @Override
     public int getItemCount() {
         return todo_list.size();
     }
+
+    void show(int i, final TextView textView)
+    {
+        Log.d("극",remove_num);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("알림");
+        builder.setMessage(todo_list.get(i).todo+" (을)를 삭제하시겠습니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        myRef.addChildEventListener(childEventListener);
+                        Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_LONG).show();
+                        textView.setPaintFlags(textView.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+                        textView.setTextColor(Color.BLACK);
+
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context,"취소되었습니다.",Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
+    }
 }
+

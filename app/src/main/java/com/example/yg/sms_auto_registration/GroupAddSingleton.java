@@ -15,6 +15,8 @@ public class GroupAddSingleton {
             instance = new GroupAddSingleton();
         }
 
+
+
         return instance;
     }
 }

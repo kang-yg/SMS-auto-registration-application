@@ -19,4 +19,9 @@ public class MyApplication extends Application {
     static String localUser_providerId;
 
     static int currentGroupNum;
+
+    public static String timeForAlarm = "";
+    public static String dateForAlarm = "";
+    public static Long millis;
+    public static Long myBefore = new Long("0");
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="alramspinner_sche">
+        <item >알림없음</item>
+        <item >당일 오전</item>
+        <item >1일 전</item>
+    </string-array>
+</resources>
+

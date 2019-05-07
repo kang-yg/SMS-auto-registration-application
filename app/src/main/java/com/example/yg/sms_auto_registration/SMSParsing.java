@@ -70,16 +70,20 @@ class SMSParsing {
         return list;
     }
 
-    public ArrayList<String> checkNumer(String number, String str) {
-        ArrayList<String> checkNumerList = new ArrayList<>();
+    public ArrayList<String> checkNumber(String number, String str) {
+        ArrayList<String> checkNumberList = new ArrayList<>();
         ArrayList<String> resultList = new ArrayList<>();
-        checkNumerList = this.extractDate(str);
+        checkNumberList = this.extractDate(str);
         int flag = 0;
 
 
         String sampleNum01 = "15881688";
         String sampleNum02 = "15447758";
+
         String sampleNum03 = "01041639299";
+        String sampleNum04 = "01045330593";
+        String sampleNum05 = "01046927597";
+        String sampleNum06 = "01083521995";
 
         if (number.equals(sampleNum01)) {
             flag = 0;
@@ -88,19 +92,31 @@ class SMSParsing {
         } else if (number.equals(sampleNum03)) {
             flag = 2;
         }
+        else if (number.equals(sampleNum04)) {
+            flag = 3;
+        }
+        else if (number.equals(sampleNum05)) {
+            flag = 4;
+        }
+        else if (number.equals(sampleNum06)) {
+            flag = 5;
+        }
 
         switch (flag) {
             case 0:
-                resultList.add(checkNumerList.get(3)); //content
-                resultList.add(checkNumerList.get(1)); //date
+                resultList.add(checkNumberList.get(3)); //content
+                resultList.add(checkNumberList.get(1)); //date
                 break;
             case 1:
-                resultList.add(checkNumerList.get(3) + " " + checkNumerList.get(6));
-                resultList.add(checkNumerList.get(1));
+                resultList.add(checkNumberList.get(4) + " " + checkNumberList.get(6));
+                resultList.add(checkNumberList.get(2));
                 break;
             case 2:
-                resultList.add(checkNumerList.get(0));
-                resultList.add(checkNumerList.get(1));
+            case 3:
+            case 4:
+            case 5:
+                resultList.add(checkNumberList.get(0));
+                resultList.add(checkNumberList.get(1));
                 break;
         }
 

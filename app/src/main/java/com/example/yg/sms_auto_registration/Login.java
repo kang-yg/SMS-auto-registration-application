@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 //구글 로그인 성공해서 파베에 인증
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+                Log.d("result값", String.valueOf(result));
             } else {
                 //구글 로그인 실패
             }
@@ -82,6 +84,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             Toast.makeText(getApplicationContext(), "구글 로그인 인증 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
+
                         }
                     }
                 });

@@ -17,15 +17,19 @@ public class GrouplistActivity extends Activity { //그룹참여자 리스트 �
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groupuserlist);
 
+        Intent intent = getIntent();
+        int groupNum = intent.getExtras().getInt("GroupNum");
+        ConnectFireBaseDB.getUserNameForUserList(groupNum);
+
         GroupListSingleton groupListSingleton = GroupListSingleton.getInstance();
-        groupListSingleton.mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        groupListSingleton.mRecyclerView = (RecyclerView) findViewById(R.id.group_recycler_view);
         groupListSingleton.mRecyclerView.setHasFixedSize(true);
         groupListSingleton.mlayoutManager = new LinearLayoutManager(this);
         groupListSingleton.mRecyclerView.setLayoutManager(groupListSingleton.mlayoutManager);
         groupListSingleton.activity = this;
 
 
-        ConnectFireBaseDB.getUserNameForUserList();
+
 
     }
 

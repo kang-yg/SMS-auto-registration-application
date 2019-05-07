@@ -38,6 +38,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         //Group schedule start day
         Button stBut = (Button)getActivity().findViewById(R.id.sta_datepick);
+        MyApplication.dateForAlarm = formatted;
         stBut.setText(formatted);
 
 /*        //Group do list day

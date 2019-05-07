@@ -33,5 +33,6 @@ public class TodoAddDatePickerFragment extends DialogFragment implements DatePic
 
         Button button = (Button) getActivity().findViewById(R.id.datepick);
         button.setText(formatted);
+        MyApplication.dateForAlarm = formatted;
     }
 }

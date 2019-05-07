@@ -35,7 +35,7 @@ public class SMSReceiver extends BroadcastReceiver {
                         senderNo = currentSMS.getDisplayOriginatingAddress();
                         message = currentSMS.getDisplayMessageBody();
                         Date curDate = new Date(currentSMS.getTimestampMillis());
-                        SimpleDateFormat sdf = new SimpleDateFormat( "MM-dd" );
+                        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy년MM월dd일" );
                         receivedDate = sdf.format( curDate );
 
                         Toast.makeText(context, "senderNum: " + senderNo + " :\n message: " + message + "\n time: " + receivedDate, Toast.LENGTH_LONG).show();

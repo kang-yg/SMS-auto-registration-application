@@ -1,7 +1,9 @@
 package com.example.yg.sms_auto_registration;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,12 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +27,7 @@ import java.util.Map;
 
 public class ConnectFireBaseDB {
     private static DatabaseReference myRef;
+    static Integer group_number;
 
     /*---------------------------------------------------------------------------------------------------------------------*/
     //User
@@ -43,6 +48,36 @@ public class ConnectFireBaseDB {
 
     public static void UserRead() {
         Log.d("UserRead", "start UserRead");
+
+        DatabaseReference myRef1= FirebaseDatabase.getInstance().getReference().child("GroupNumber");
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                group_number = (int) (long) dataSnapshot.getValue();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        myRef1.addChildEventListener(childEventListener);
         myRef = FirebaseDatabase.getInstance().getReference();
 
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -91,10 +126,12 @@ public class ConnectFireBaseDB {
                                 }
                             }
                         }
-
+                        Log.d("곽",group_number.toString());
                         ConnectFireBaseDB.GroupNumberRead();
-                        ConnectFireBaseDB.postGroup(true, MyApplication.groupNumber, tempUID, title);
-                        ConnectFireBaseDB.postGroupNumber(true, MyApplication.groupNumber + 1);
+                        ConnectFireBaseDB.postGroup(true, group_number, tempUID, title);
+                        ConnectFireBaseDB.postGroupNumber(true, group_number + 1);
+                        MyApplication.groupNumber=MyApplication.groupNumber+1;
+                        ConnectFireBaseDB.GroupRead();
                     }
                 });
 
@@ -139,7 +176,6 @@ public class ConnectFireBaseDB {
 
     public static void GroupRead() {
         myRef = FirebaseDatabase.getInstance().getReference();
-
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -177,6 +213,9 @@ public class ConnectFireBaseDB {
                             groupInfo.add(MyApplication.firebaseDB_groups.get(i));
                         }
                     }
+                    if(i == MyApplication.firebaseDB_groups.size()-1){
+                        spinnerArrayList.add("+");
+                    }
                 }
 
                 Log.d("GroupRead", Integer.toString(MyApplication.firebaseDB_groups.size()));
@@ -185,7 +224,7 @@ public class ConnectFireBaseDB {
 //                }
                 final MainSingleton mainSingleton = MainSingleton.getInstance();
 
-                ArrayAdapter<String> adp = new ArrayAdapter<String>(mainSingleton.activity, android.R.layout.simple_spinner_dropdown_item, spinnerArrayList);
+                ArrayAdapter<String> adp = new ArrayAdapter<String>(mainSingleton.activity, android.R.layout.simple_list_item_1, spinnerArrayList);
 
                 mainSingleton.spinner.setAdapter(adp);
 
@@ -198,6 +237,29 @@ public class ConnectFireBaseDB {
                                 MyApplication.currentGroupNum = MyApplication.firebaseDB_groups.get(i).getGroupNumber();
                             }
                         }
+
+                        String text = mainSingleton.spinner.getItemAtPosition(position).toString();
+                        mainSingleton.group_btn.setText(text);
+
+                        GroupFragment.set_materialCalendarView.removeDecorators();
+                        GroupFragment.set_materialCalendarView.addDecorator(new OndateDecorator());
+                        GroupFragment.set_materialCalendarView.addDecorator(new SaturdayDecorator());
+                        GroupFragment.set_materialCalendarView.addDecorator(new SundayDecorator());
+
+
+                        for (int i=0;i<GroupFragment.materialCalendarView_group.size();i++) {
+                            if(mainSingleton.group_btn.getText().toString().equals(GroupFragment.materialCalendarView_group.get(i).GroupName)) {
+                                for(int j=0;j<GroupFragment.schedule_date.size();j++) {
+                                    if(GroupFragment.materialCalendarView_group.get(i).num.equals(GroupFragment.schedule_date.get(j).group_num)) {
+                                        GroupFragment.color_group = new int[1];
+                                        DayViewDecorator eventDecorator=new EventDecorator(GroupFragment.color_group,GroupFragment.schedule_date.get(j).year,GroupFragment.schedule_date.get(j).month,GroupFragment.schedule_date.get(j).day,1);
+                                        GroupFragment.set_materialCalendarView.addDecorator(eventDecorator);
+                                        //Log.d("굳",GroupFragment.schedule_date.get(j).year+"-"+GroupFragment.schedule_date.get(j).month+"-"+GroupFragment.schedule_date.get(j).day+""+GroupFragment.schedule_date.get(j).group_num+""+GroupFragment.schedule_date.get(j).sche_title);
+                                    }
+                                }
+                            }
+                        }
+
                         Log.d("spinner", "spinner item: " + mainSingleton.spinner.getSelectedItem().toString());
                         Log.d("spinner", "MyApplication.currentGroupNum: " + Integer.toString(MyApplication.currentGroupNum));
                     }
@@ -208,9 +270,12 @@ public class ConnectFireBaseDB {
                     }
                 });
                 //그룹캘린더 버튼 텍스트 설정, 수정필요
-                String text = mainSingleton.spinner.getSelectedItem().toString();
-                mainSingleton.group_btn.setText(text);
-
+                if(mainSingleton.spinner.getSelectedItem()==null) {
+                    mainSingleton.group_btn.setText("그룹 캘린더");
+                }else {
+                    String text = mainSingleton.spinner.getSelectedItem().toString();
+                    mainSingleton.group_btn.setText(text);
+                }
 /*                firebaseDB_group.setGroupName(arrayList.get(0));
 
                 Object objectValue = arrayList.get(1);
@@ -412,13 +477,16 @@ public class ConnectFireBaseDB {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int scheduleNum = -1;
+                Integer scheduleNum;
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Object objectValue = postSnapshot.getValue();
-                    scheduleNum = (int) (long) objectValue;
+//                    Object objectValue = postSnapshot.getValue();
+//                    scheduleNum = (int) (long) objectValue;
+                    scheduleNum = (int) (long) postSnapshot.getValue();
+                    MyApplication.scheduleNumber = scheduleNum.intValue();
+                    Log.d("긁",String.valueOf(scheduleNum));
                 }
 
-                MyApplication.scheduleNumber = scheduleNum;
+//                MyApplication.scheduleNumber = scheduleNum.intValue();
             }
 
             @Override
@@ -433,7 +501,7 @@ public class ConnectFireBaseDB {
     /*---------------------------------------------------------------------------------------------------------------------*/
     //GroupUserList
 
-    public static void getUserNameForUserList() {
+    public static void getUserNameForUserList(final int gn) {
         Log.d("UserRead", "start UserRead");
         myRef = FirebaseDatabase.getInstance().getReference();
 
@@ -466,7 +534,7 @@ public class ConnectFireBaseDB {
                 ConnectFireBaseDB.GroupRead();
                 ArrayList<String> userUIDList = new ArrayList<>();
                 for (int i = 0; i < MyApplication.firebaseDB_groups.size(); i++) {
-                    if (MyApplication.currentGroupNum == MyApplication.firebaseDB_groups.get(i).getGroupNumber()) {
+                    if (gn == MyApplication.firebaseDB_groups.get(i).getGroupNumber()) {
                         for (int j = 0; j < MyApplication.firebaseDB_groups.get(i).getUserUID().size(); j++) {
                             if (!userUIDList.contains(MyApplication.firebaseDB_groups.get(i).getUserUID().get(j))) {
                                 userUIDList.add(MyApplication.firebaseDB_groups.get(i).getUserUID().get(j));

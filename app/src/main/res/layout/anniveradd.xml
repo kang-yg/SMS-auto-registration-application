@@ -101,13 +101,13 @@
 
         <Spinner
             android:id="@+id/alram_spinner"
-            android:layout_width="90dp"
+            android:layout_width="110dp"
             android:layout_height="30dp"
             android:layout_alignTop="@+id/alram"
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/alram"
             android:background="@android:color/transparent"
-            android:entries="@array/alramspinner"
+            android:entries="@array/alramspinner_sche"
             android:textColor="@color/black" />
 
         <TextView
